@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import ChatBubble from '../components/ChatBubble';
+import ParallaxBackground from '../components/ParallaxBackground';
 
 export default function Game() {
   const [messages, setMessages] = useState([]);
@@ -25,26 +26,46 @@ export default function Game() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col p-4">
-      <div className="flex-1 overflow-y-auto mb-4">
-        {messages.map((m, idx) => (
-          <ChatBubble key={idx} message={m.content} fromUser={m.fromUser} />
-        ))}
+    <>
+      <ParallaxBackground />
+      <div className="min-h-screen flex flex-col p-6 relative z-10">
+        {/* Header */}
+        <div className="glass-card p-6 mb-6 text-center">
+          <h1 className="section-title">Interactive CV Game</h1>
+          <p className="body-text">Ask me anything about my experience!</p>
+        </div>
+        
+        {/* Chat messages container */}
+        <div className="flex-1 overflow-y-auto mb-6 glass-card p-6">
+          {messages.length === 0 && (
+            <div className="text-center body-text opacity-75 mb-4">
+              Start the conversation by asking me a question!
+            </div>
+          )}
+          {messages.map((m, idx) => (
+            <ChatBubble key={idx} message={m.content} fromUser={m.fromUser} />
+          ))}
+        </div>
+        
+        {/* Input container */}
+        <div className="glass-card p-6">
+          <div className="flex items-center space-x-4">
+            <input
+              className="flex-1 cv-input"
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              placeholder={suggestions[messages.length % suggestions.length]}
+              onKeyPress={(e) => e.key === 'Enter' && sendMessage()}
+            />
+            <button
+              className="cv-button"
+              onClick={sendMessage}
+            >
+              Send
+            </button>
+          </div>
+        </div>
       </div>
-      <div className="flex items-center space-x-2">
-        <input
-          className="flex-1 p-2 rounded bg-gray-800"
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-          placeholder={suggestions[messages.length % suggestions.length]}
-        />
-        <button
-          className="px-4 py-2 bg-blue-600 rounded"
-          onClick={sendMessage}
-        >
-          Send
-        </button>
-      </div>
-    </div>
+    </>
   );
 }
