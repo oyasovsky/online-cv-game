@@ -384,21 +384,29 @@ export default function Game() {
     <>
       <ParallaxBackground />
       <div className="min-h-screen flex flex-col p-6 relative z-10 w-full lg:w-1/2 lg:mx-auto">
+        {/* Minimal Navigation */}
+        <div className="flex justify-between items-center mb-4">
+          <a 
+            href="/" 
+            className="text-white/60 hover:text-white/80 transition-colors text-sm"
+          >
+            ← Home
+          </a>
+          <a 
+            href="/Olga_Yasovsky_CV.pdf" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            download="Olga_Yasovsky_CV.pdf"
+            className="text-white/60 hover:text-white/80 transition-colors text-sm"
+          >
+            📄 CV
+          </a>
+        </div>
+        
         {/* Header */}
         <div className="glass-card p-6 mb-6 text-center">
           <h1 className="section-title">OlgaGPT - Interactive CV</h1>
           <p className="body-text">Ask me anything about my leadership, experience, or values!</p>
-          <div className="mt-4">
-            <a 
-              href="/data/olga-yasovsky-cv.pdf" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="inline-flex items-center space-x-2 text-blue-300 hover:text-blue-200 transition-colors text-sm"
-            >
-              <span>📄</span>
-              <span>View Classic CV</span>
-            </a>
-          </div>
         </div>
         
         {/* Show loading state during SSR to prevent hydration errors */}
