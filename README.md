@@ -1,6 +1,6 @@
 # OlgaGPT - Interactive CV with RAG Assistant
 
-This project is a futuristic personal CV website with an interactive RAG (Retrieval-Augmented Generation) assistant powered by OpenAI and ChromaDB.
+This project is a futuristic personal CV website with an interactive RAG (Retrieval-Augmented Generation) assistant powered by OpenAI and Firebase Vector Search.
 
 ## 🚀 Features
 
@@ -15,6 +15,7 @@ This project is a futuristic personal CV website with an interactive RAG (Retrie
 ### Prerequisites
 - Node.js 18+ 
 - OpenAI API key
+- Firebase project with Firestore enabled
 
 ### Installation
 
@@ -42,7 +43,7 @@ This project is a futuristic personal CV website with an interactive RAG (Retrie
    - Load markdown files from `/data/olga_docs/`
    - Chunk them into 300-500 token segments
    - Generate embeddings using OpenAI's text-embedding-3-small
-   - Store them in ChromaDB for fast retrieval
+   - Store them in Firebase Vector Search for fast retrieval
 
 4. **Start the development server**:
    ```bash
@@ -184,7 +185,7 @@ service cloud.firestore {
 3. Deploy automatically on push to main branch
 
 ### Other Platforms
-- Ensure ChromaDB is accessible (or switch to cloud vector store)
+- Ensure Firebase Vector Search is properly configured
 - Set up environment variables
 - Run `npm run build` and `npm start`
 

@@ -8,7 +8,13 @@
     "start": "next start",
     "lint": "next lint",
     "create-embeddings": "node scripts/create-embeddings.js",
-    "setup-firebase": "node scripts/setup-firebase.js"
+    "setup-firebase": "node scripts/setup-firebase.js",
+    "setup-env": "node scripts/setup-env.js",
+    "fix-env": "node scripts/fix-env.js",
+    "debug-env": "node scripts/debug-env.js",
+    "fix-private-key": "node scripts/fix-private-key.js",
+    "fix-pem-key": "node scripts/fix-pem-key.js",
+    "check-private-key": "node scripts/check-private-key.js"
   },
   "dependencies": {
     "dotenv": "^16.5.0",

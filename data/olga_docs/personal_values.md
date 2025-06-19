@@ -67,12 +67,12 @@ Even as a leader, I believe it's crucial to stay hands-on with technology. This 
 I love what I call "vibe coding" - the art of quickly building prototypes and MVPs to test ideas and learn new technologies. This approach helps me stay current with the latest tools and understand the developer experience firsthand.
 
 **Example: This Interactive CV Site**
-I built this entire interactive CV site in just a couple of hours using Next.js, OpenAI's API, and ChromaDB for vector search. It's a perfect example of how I stay hands-on with technology - I had an idea for an interactive way to showcase my experience, and I just started coding. No over-engineering, no perfect architecture, just building something that works and demonstrates the concept.
+I built this entire interactive CV site in just a couple of hours using Next.js, OpenAI's API, and Firebase Vector Search for semantic retrieval. It's a perfect example of how I stay hands-on with technology - I had an idea for an interactive way to showcase my experience, and I just started coding. No over-engineering, no perfect architecture, just building something that works and demonstrates the concept.
 
 The site features:
 - A RAG-powered AI assistant (OlgaGPT) that can answer questions about my experience
 - Real-time chat interface with typing effects
-- Vector embeddings of my knowledge base
+- Vector embeddings of my knowledge base stored in Firebase
 - Modern UI with glass morphism and parallax effects
 - All built from scratch in a few hours
 

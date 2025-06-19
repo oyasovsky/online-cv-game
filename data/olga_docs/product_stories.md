@@ -387,7 +387,7 @@ The best leaders aren't those who never fail - they're those who fail well, lear
 
 **The Solution**: I built this entire interactive CV site in just a couple of hours using what I call "vibe coding" - the art of quickly building prototypes and MVPs to test ideas and learn new technologies. No over-engineering, no perfect architecture, just building something that works and demonstrates the concept.
 
-**The Tech Stack**: Next.js, OpenAI's API for the AI assistant, ChromaDB for vector search, and modern CSS with glass morphism effects. The site features a RAG-powered AI assistant (OlgaGPT) that can answer questions about my experience using semantic search across my knowledge base.
+**The Tech Stack**: Next.js, OpenAI's API for the AI assistant, Firebase Vector Search for semantic retrieval, and modern CSS with glass morphism effects. The site features a RAG-powered AI assistant (OlgaGPT) that can answer questions about my experience using semantic search across my knowledge base stored in Firebase.
 
 **The Result**: A fully functional interactive CV that demonstrates my ability to stay hands-on with technology, rapidly prototype ideas, and ship working code quickly. It's a perfect example of how I practice what I preach about experimentation and learning.
 

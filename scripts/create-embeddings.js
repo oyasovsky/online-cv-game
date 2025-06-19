@@ -1,4 +1,5 @@
-require('dotenv').config();
+require('dotenv').config({ path: '.env.local' });
+require('dotenv').config({ path: '.env' });
 const fs = require('fs').promises;
 const path = require('path');
 const OpenAI = require('openai');
