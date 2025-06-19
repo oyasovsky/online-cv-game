@@ -26,8 +26,13 @@ export default function Home() {
         {/* Action buttons */}
         <div className=" p-8 mb-8">
           <div className="space-x-6">
-            <a href="/Olga_Yasovsky_CV.pdf" download>
-              <Button>View Classic CV</Button>
+            <a
+              href="/Olga_Yasovsky_CV.pdf"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="cv-button"
+            >
+              📄 View Classic CV
             </a>
             <a href="/olgagpt">
               <Button>Chat with OlgaGPT</Button>
