@@ -8,7 +8,7 @@ export default function Home() {
   return (
     <>
       <ParallaxBackground />
-      <div className="min-h-screen flex flex-col items-center justify-center text-center relative z-10 px-4">
+      <div className="min-h-screen flex flex-col items-center justify-center text-center relative z-10 px-4 w-full lg:w-1/2 lg:mx-auto">
         <Head>
           <title>Olga Yasovsky - CV</title>
         </Head>
@@ -29,8 +29,8 @@ export default function Home() {
             <a href="/Olga_Yasovsky_CV.pdf" download>
               <Button>View Classic CV</Button>
             </a>
-            <a href="/game">
-              <Button>Enter Game Mode</Button>
+            <a href="/olgagpt">
+              <Button>Chat with OlgaGPT</Button>
             </a>
           </div>
         </div>

@@ -1,15 +1,19 @@
 {
   "name": "online-cv-game",
   "version": "1.0.0",
-  "description": "Interactive CV site",
+  "description": "Interactive CV site with RAG assistant",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "create-embeddings": "node scripts/create-embeddings.js"
   },
   "dependencies": {
-    "next": "^14.2.30",
+    "chromadb": "^1.8.1",
+    "dotenv": "^16.5.0",
+    "next": "14.2.3",
+    "openai": "^4.28.0",
     "react": "18.2.0",
     "react-dom": "18.2.0"
   },

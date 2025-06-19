@@ -230,3 +230,22 @@ html {
 .cv-input::placeholder {
   color: rgba(255, 255, 255, 0.6);
 }
+
+/* Chat message formatting styles */
+.body-text p {
+  margin-bottom: 0.75rem;
+}
+
+.body-text p:last-child {
+  margin-bottom: 0;
+}
+
+.body-text strong {
+  font-weight: 600;
+  color: #ffffff;
+  text-shadow: 0 0 8px rgba(255, 255, 255, 0.3);
+}
+
+.body-text br {
+  margin-bottom: 0.5rem;
+}
