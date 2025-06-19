@@ -1,5 +1,6 @@
 import OpenAI from 'openai';
 import { adminDb } from '../../lib/firebase-admin';
+const auditLogger = require('../../lib/firebase-audit');
 
 // Initialize clients
 const openai = new OpenAI({
@@ -50,13 +51,36 @@ export default async function handler(req, res) {
   }
 
   try {
-    const { message, history = [] } = req.body;
+    const { message, history = [], sessionId = null } = req.body;
 
     if (!message) {
       return res.status(400).json({ error: 'Message is required' });
     }
 
     console.log('🔍 Processing query:', message);
+
+    // Generate or get session ID for audit logging
+    let currentSessionId = sessionId;
+    if (!currentSessionId) {
+      currentSessionId = `session_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+      
+      // Create new audit session
+      const metadata = {
+        userAgent: req.headers['user-agent'] || '',
+        ipAddress: req.headers['x-forwarded-for'] || req.connection.remoteAddress || '',
+        referrer: req.headers.referer || '',
+        firstQuestion: message
+      };
+      
+      try {
+        await auditLogger.createSession(currentSessionId, metadata);
+      } catch (error) {
+        console.warn('⚠️ Failed to create audit session:', error);
+        // Continue without audit logging if it fails
+      }
+    }
+
+    const startTime = Date.now();
 
     // Generate embedding for the query
     const queryEmbedding = await openai.embeddings.create({
@@ -177,10 +201,12 @@ Answer as Olga would:`;
     });
 
     const reply = completion.choices[0].message.content;
+    const responseTime = Date.now() - startTime;
 
     console.log('💬 Query processed successfully');
     console.log('📊 Context sources:', deduplicatedResults.metadatas.map(m => m.source));
     console.log('⏱️ Response length:', reply.length, 'characters');
+    console.log('🔍 Distances:', deduplicatedResults.distances);
 
     // Calculate confidence scores properly
     const calculateConfidence = (distance) => {
@@ -202,39 +228,50 @@ Answer as Olga would:`;
         confidence = 50 + (1.5 - distance) * 40;
       } else {
         // Poor match: 0-50%
-        confidence = Math.max(0, 50 - (distance - 1.5) * 100);
+        confidence = Math.max(0, 50 - (distance - 1.5) * 50);
       }
-      
-      // Boost scores in the 50-60% range by adding 10 points
+
+      // Boost confidence scores in the 50-60% range by adding 10 points
       if (confidence >= 50 && confidence <= 60) {
         confidence += 10;
       }
-      
-      return Math.round(confidence); // Return as percentage (0-100)
+
+      return Math.round(Math.max(0, Math.min(100, confidence)));
     };
 
     const confidenceScores = deduplicatedResults.distances.map(calculateConfidence);
-
-    console.log('🔍 Distances:', deduplicatedResults.distances);
     console.log('🎯 Confidence scores:', confidenceScores);
 
-    // Return response
-    res.status(200).json({ 
+    // Log the question and response for audit
+    if (currentSessionId) {
+      try {
+        const questionData = {
+          question: message,
+          response: reply,
+          confidence: confidenceScores[0] || 0, // Use highest confidence score
+          sources: deduplicatedResults.metadatas.map(m => m.source),
+          responseTime,
+          tokensUsed: completion.usage?.total_tokens || 0,
+          questionNumber: history.filter(msg => msg.fromUser).length + 1,
+          followUpTo: history.length > 0 ? history[history.length - 1].id : null
+        };
+
+        await auditLogger.logQuestion(currentSessionId, questionData);
+      } catch (error) {
+        console.warn('⚠️ Failed to log question for audit:', error);
+        // Continue without audit logging if it fails
+      }
+    }
+
+    res.status(200).json({
       reply,
+      confidence: confidenceScores[0] || 0,
       sources: deduplicatedResults.metadatas.map(m => m.source),
-      confidence: confidenceScores
+      sessionId: currentSessionId
     });
 
   } catch (error) {
-    console.error('❌ Error in RAG query:', error);
-    
-    // Fallback response if RAG fails
-    const fallbackResponse = "I'm having trouble accessing my knowledge base right now, but I'd be happy to chat about my experience as an R&D leader, team management, or any other topics you're interested in. What would you like to know?";
-    
-    res.status(200).json({ 
-      reply: fallbackResponse,
-      sources: [],
-      confidence: []
-    });
+    console.error('❌ Error processing query:', error);
+    res.status(500).json({ error: 'Failed to process query' });
   }
 } 

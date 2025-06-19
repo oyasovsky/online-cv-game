@@ -14,7 +14,9 @@
     "debug-env": "node scripts/debug-env.js",
     "fix-private-key": "node scripts/fix-private-key.js",
     "fix-pem-key": "node scripts/fix-pem-key.js",
-    "check-private-key": "node scripts/check-private-key.js"
+    "check-private-key": "node scripts/check-private-key.js",
+    "setup-audit-rules": "node scripts/setup-audit-rules.js",
+    "test-audit": "node scripts/test-audit.js"
   },
   "dependencies": {
     "dotenv": "^16.5.0",

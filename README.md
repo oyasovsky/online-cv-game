@@ -120,6 +120,122 @@ The system logs:
 
 This data helps improve the knowledge base and response quality over time.
 
+## 📊 Audit Logging & Analytics
+
+OlgaGPT includes a comprehensive audit logging system that tracks all chat interactions for analytics and improvement purposes.
+
+### 🔍 What Gets Logged
+
+**Session Data:**
+- Session ID and metadata
+- User agent and IP address (anonymized)
+- Session duration and question count
+- Total tokens used
+
+**Question Data:**
+- Full question text and AI response
+- Confidence scores and response time
+- Sources used for each response
+- Follow-up relationships between questions
+- Token usage per question
+
+### 🛠️ Setting Up Audit Logging
+
+1. **Update Firestore Security Rules:**
+   ```bash
+   npm run setup-audit-rules
+   ```
+   Copy the generated rules to your Firebase Console Firestore Rules section.
+
+2. **Verify Audit Collection:**
+   The system automatically creates a `chat_audit_logs` collection in Firestore when the first question is asked.
+
+### 📈 Analytics Dashboard
+
+Access the analytics dashboard at `/analytics` to view:
+
+- **Overview Metrics:** Total sessions, questions, average session duration
+- **Performance Data:** Response times, confidence scores, token usage
+- **Popular Content:** Most-used knowledge sources and top questions
+- **Time-based Filtering:** View data for last 7 days, 30 days, 90 days, or all time
+
+### 🔒 Privacy & Security
+
+- **Server-only Access:** Audit logs are only accessible from your server
+- **No Personal Data:** IP addresses are logged but not displayed in analytics
+- **Automatic Cleanup:** Optional cleanup of old logs (90+ days) via `auditLogger.cleanupOldLogs()`
+
+### 📊 API Endpoints
+
+**Get Analytics:**
+```bash
+GET /api/analytics
+GET /api/analytics?startDate=2024-01-01&endDate=2024-01-31
+GET /api/analytics?sessionId=session_123456
+```
+
+**Response Format:**
+```json
+{
+  "type": "overall",
+  "data": {
+    "totalSessions": 150,
+    "totalQuestions": 450,
+    "averageQuestionsPerSession": 3.0,
+    "averageResponseTime": 2500,
+    "averageConfidence": 75,
+    "totalTokens": 125000,
+    "mostCommonSources": [...],
+    "topQuestions": [...],
+    "sessionDuration": 8.5
+  }
+}
+```
+
+### 🎯 Use Cases
+
+**Content Improvement:**
+- Identify gaps in knowledge base coverage
+- Find most-asked questions to prioritize content
+- Track confidence scores to improve embeddings
+
+**Performance Optimization:**
+- Monitor response times and optimize bottlenecks
+- Track token usage for cost optimization
+- Identify slow queries for caching
+
+**User Experience:**
+- Understand user engagement patterns
+- Identify common conversation flows
+- Measure session quality and duration
+
+### 🔧 Customization
+
+**Add Custom Metadata:**
+```javascript
+// In your API endpoint
+const metadata = {
+  userAgent: req.headers['user-agent'],
+  ipAddress: req.headers['x-forwarded-for'],
+  referrer: req.headers.referer,
+  customField: 'customValue'
+};
+
+await auditLogger.createSession(sessionId, metadata);
+```
+
+**Custom Analytics:**
+```javascript
+// Get session-specific stats
+const sessionStats = await auditLogger.getSessionStats(sessionId);
+
+// Get filtered analytics
+const analytics = await auditLogger.getAnalytics({
+  startDate: new Date('2024-01-01'),
+  endDate: new Date('2024-01-31')
+});
+```
+
 ## 🚀 Deployment
 
 ### Firebase Vector Search Setup

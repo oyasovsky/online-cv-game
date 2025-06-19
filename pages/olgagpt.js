@@ -8,6 +8,7 @@ export default function Game() {
   const [isLoading, setIsLoading] = useState(false);
   const [askedQuestions, setAskedQuestions] = useState(new Set());
   const [isClient, setIsClient] = useState(false);
+  const [sessionId, setSessionId] = useState(null);
   
   // Ensure component only renders on client side to prevent hydration errors
   useEffect(() => {
@@ -306,7 +307,8 @@ export default function Game() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ 
           message: input, 
-          history: messages 
+          history: messages,
+          sessionId: sessionId
         })
       });
 
@@ -318,6 +320,11 @@ export default function Game() {
       }
       
       const data = await res.json();
+      
+      // Store session ID if returned from API
+      if (data.sessionId && !sessionId) {
+        setSessionId(data.sessionId);
+      }
       
       if (data.reply) {
         setMessages((prev) => [...prev, { 
@@ -364,6 +371,7 @@ export default function Game() {
     setMessages([]);
     setInput('');
     setAskedQuestions(new Set());
+    setSessionId(null);
   };
 
   // Check if we should show follow-up questions (after the last message is from OlgaGPT)
@@ -380,6 +388,17 @@ export default function Game() {
         <div className="glass-card p-6 mb-6 text-center">
           <h1 className="section-title">OlgaGPT - Interactive CV</h1>
           <p className="body-text">Ask me anything about my leadership, experience, or values!</p>
+          <div className="mt-4">
+            <a 
+              href="/data/olga-yasovsky-cv.pdf" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="inline-flex items-center space-x-2 text-blue-300 hover:text-blue-200 transition-colors text-sm"
+            >
+              <span>📄</span>
+              <span>View Classic CV</span>
+            </a>
+          </div>
         </div>
         
         {/* Show loading state during SSR to prevent hydration errors */}
@@ -428,28 +447,25 @@ export default function Game() {
             )}
             
             {/* Chat messages container */}
-            <div className="flex-1 overflow-y-auto mb-6 glass-card p-6">
-              {messages.length === 0 && (
-                <div className="text-center body-text opacity-75 mb-4">
-                  Start the conversation by asking me a question!
-                </div>
-              )}
-              {messages.map((m, idx) => (
-                <ChatBubble 
-                  key={idx} 
-                  message={m.content} 
-                  fromUser={m.fromUser}
-                  sources={m.sources}
-                  confidence={m.confidence}
-                />
-              ))}
-              {isLoading && (
-                <div className="flex items-center space-x-2 text-blue-300">
-                  <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-blue-300"></div>
-                  <span className="body-text">OlgaGPT is thinking...</span>
-                </div>
-              )}
-            </div>
+            {(messages.length > 0 || isLoading) && (
+              <div className="flex-1 overflow-y-auto mb-6 glass-card p-6">
+                {messages.map((m, idx) => (
+                  <ChatBubble 
+                    key={idx} 
+                    message={m.content} 
+                    fromUser={m.fromUser}
+                    sources={m.sources}
+                    confidence={m.confidence}
+                  />
+                ))}
+                {isLoading && (
+                  <div className="flex items-center space-x-2 text-blue-300">
+                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-blue-300"></div>
+                    <span className="body-text">OlgaGPT is thinking...</span>
+                  </div>
+                )}
+              </div>
+            )}
             
             {/* Follow-up Questions - Show after each answer */}
             {shouldShowFollowUp && (
