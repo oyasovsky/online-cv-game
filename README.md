@@ -83,10 +83,10 @@ online-cv-game/
 ### RAG Pipeline
 1. **Content Ingestion**: Markdown files are loaded and chunked into semantic segments
 2. **Embedding Generation**: Each chunk is converted to a vector using OpenAI's embedding model
-3. **Vector Storage**: Embeddings are stored in ChromaDB for fast similarity search
+3. **Vector Storage**: Embeddings are stored in Firebase Vector Search for fast similarity search
 4. **Query Processing**: User questions are embedded and matched against stored vectors
 5. **Context Retrieval**: Top 5 most relevant chunks are retrieved
-6. **Response Generation**: GPT-4 generates responses using retrieved context and Olga's personality
+6. **Response Generation**: GPT-3.5-turbo generates responses using retrieved context and Olga's personality
 
 ### Personality Layer
 OlgaGPT is configured with a detailed system prompt that captures:
@@ -107,7 +107,7 @@ OlgaGPT is configured with a detailed system prompt that captures:
 Edit the `OLGAGPT_SYSTEM_PROMPT` in `/pages/api/query.js` to adjust the AI's personality and response style.
 
 ### Changing Vector Store
-The system is designed to be easily adaptable to other vector stores like Pinecone or Supabase. Update the storage functions in `scripts/create-embeddings.js` and the query logic in `/pages/api/query.js`.
+The system is designed to be easily adaptable to other vector stores. Currently uses Firebase Vector Search, but can be updated to use Pinecone, Supabase, or other vector databases by updating the storage functions in `scripts/create-embeddings.js` and the query logic in `/pages/api/query.js`.
 
 ## 📊 Analytics & Insights
 
@@ -120,6 +120,63 @@ The system logs:
 This data helps improve the knowledge base and response quality over time.
 
 ## 🚀 Deployment
+
+### Firebase Vector Search Setup
+
+This project uses Firebase Vector Search for storing and querying embeddings. Here's how to set it up:
+
+#### 1. Create a Firebase Project
+1. Go to [Firebase Console](https://console.firebase.google.com/)
+2. Create a new project or select an existing one
+3. Enable Firestore Database
+4. Set up security rules for your collection
+
+#### 2. Get Firebase Credentials
+1. Go to Project Settings > Service Accounts
+2. Click "Generate new private key"
+3. Download the JSON file
+4. Add the credentials to your environment variables
+
+#### 3. Environment Variables
+Create a `.env.local` file with:
+
+```bash
+# OpenAI Configuration
+OPENAI_API_KEY=your_openai_api_key
+
+# Firebase Configuration (Client-side)
+NEXT_PUBLIC_FIREBASE_API_KEY=your_firebase_api_key
+NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=your_project.firebaseapp.com
+NEXT_PUBLIC_FIREBASE_PROJECT_ID=your_project_id
+NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET=your_project.appspot.com
+NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=123456789
+NEXT_PUBLIC_FIREBASE_APP_ID=your_app_id
+
+# Firebase Admin Configuration (Server-side)
+FIREBASE_PROJECT_ID=your_project_id
+FIREBASE_CLIENT_EMAIL=your_service_account_email
+FIREBASE_PRIVATE_KEY="-----BEGIN PRIVATE KEY-----\nYour private key here\n-----END PRIVATE KEY-----\n"
+```
+
+#### 4. Initialize Vector Search
+1. Run `npm run create-embeddings` to generate and store embeddings
+2. The script will create a collection called `olga_knowledge_base` in Firestore
+3. Each document contains the text content, metadata, and embedding vector
+
+#### 5. Firestore Security Rules
+Set up appropriate security rules for your collection:
+
+```javascript
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /olga_knowledge_base/{document} {
+      allow read: if true;  // Allow public read access
+      allow write: if false; // Only allow writes from your server
+    }
+  }
+}
+```
 
 ### Vercel (Recommended)
 1. Connect your GitHub repository to Vercel
@@ -147,10 +204,11 @@ This project is for personal use. Please respect the personal nature of the cont
 
 ### Common Issues
 
-**"ChromaDB connection failed"**
-- Ensure ChromaDB is running locally
-- Check network connectivity
-- Consider switching to cloud vector store
+**"Firebase connection failed"**
+- Ensure Firebase project is properly configured
+- Check environment variables are set correctly
+- Verify service account credentials
+- Ensure Firestore is enabled in your Firebase project
 
 **"OpenAI API rate limit exceeded"**
 - Reduce batch size in embedding script
@@ -161,8 +219,10 @@ This project is for personal use. Please respect the personal nature of the cont
 - Run `npm run create-embeddings` again
 - Check that markdown files exist in `/data/olga_docs/`
 - Verify API key is correct
+- Ensure Firebase collection contains documents
 
 ### Getting Help
 - Check the console logs for detailed error messages
 - Ensure all dependencies are installed correctly
 - Verify environment variables are set properly
+- Run `npm run setup-firebase` to test Firebase connection

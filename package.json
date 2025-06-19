@@ -7,11 +7,13 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "create-embeddings": "node scripts/create-embeddings.js"
+    "create-embeddings": "node scripts/create-embeddings.js",
+    "setup-firebase": "node scripts/setup-firebase.js"
   },
   "dependencies": {
-    "chromadb": "^1.8.1",
     "dotenv": "^16.5.0",
+    "firebase": "^11.9.1",
+    "firebase-admin": "^13.4.0",
     "next": "14.2.3",
     "openai": "^4.28.0",
     "react": "18.2.0",

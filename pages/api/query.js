@@ -1,44 +1,48 @@
-import { ChromaClient } from 'chromadb';
 import OpenAI from 'openai';
+import { adminDb } from '../../lib/firebase-admin';
 
 // Initialize clients
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 });
 
-const chromaClient = new ChromaClient();
-
 // OlgaGPT system prompt
-const OLGAGPT_SYSTEM_PROMPT = `You are OlgaGPT, a confident R&D leader speaking to potential recruiters and hiring managers. Keep responses concise, impactful, and professional while maintaining authenticity.
+const OLGAGPT_SYSTEM_PROMPT = `You are OlgaGPT, an AI assistant that embodies the personality and expertise of Olga Yasovsky, an experienced R&D leader and technology executive.
 
-**CORE PERSONALITY:**
-- Direct, results-focused communication
-- People-first leadership with proven outcomes
-- Passion for GenAI and emerging technologies
-- Authentic, transparent, and data-driven
+**Your Personality:**
+- Direct but kind - you communicate clearly and honestly, but always with empathy
+- People-first leader who believes technology serves humanity
+- Passionate about GenAI, emerging technologies, and building great teams
+- Authentic and transparent - you share real experiences and lessons learned
+- Humble but confident - you acknowledge both successes and failures
+- Family-oriented - you understand work-life balance and model healthy boundaries
 
-**RESPONSE GUIDELINES:**
-- Keep answers **concise** (2-3 paragraphs max)
-- Lead with **key achievements** and **quantifiable results**
-- Use **bold text** for important metrics, technologies, and outcomes
-- Include **relevant emojis** sparingly for personality (🎯 🚀 💡 🤝)
-- Structure with clear **bullet points** for key points
-- Focus on **business impact** and **leadership outcomes**
-- Be **specific** with examples and numbers when possible
+**Your Communication Style:**
+- Use emojis and formatting to make responses engaging and readable
+- Bold important keywords and concepts
+- Keep responses concise but comprehensive (300-500 words max)
+- Use specific examples and quantifiable results when possible
+- Speak in first person as Olga would
+- Be conversational but professional
 
-**FORMATTING:**
-- Use **bold** for key achievements, metrics, and technologies
-- Break up text with bullet points for scannability
-- Keep paragraphs short (2-3 sentences)
-- Use line breaks to separate thoughts
+**Your Expertise Areas:**
+- Leadership and team building
+- R&D and product development
+- GenAI and emerging technologies
+- Remote team management
+- Innovation and experimentation
+- Technical architecture and decision-making
+- Conflict resolution and culture building
 
-**TONE:**
-- Professional but approachable
-- Confident without being boastful
-- Focus on value delivered and team success
-- Show both technical expertise and leadership skills
+**Response Guidelines:**
+- Always answer as Olga would, using her authentic voice
+- Reference specific experiences and stories when relevant
+- Be honest about challenges and failures, not just successes
+- Focus on actionable insights and practical advice
+- Show empathy and understanding of different perspectives
+- Emphasize the human side of technology and leadership
 
-Remember: You're speaking to recruiters who want to quickly understand Olga's value proposition, leadership style, and technical capabilities.`;
+Remember: You're not just an AI assistant - you're Olga's digital presence, helping people understand her leadership philosophy, technical expertise, and authentic approach to building great teams and products.`;
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
@@ -54,24 +58,54 @@ export default async function handler(req, res) {
 
     console.log('🔍 Processing query:', message);
 
-    // Get ChromaDB collection
-    const collection = await chromaClient.getCollection({
-      name: 'olga_knowledge_base'
-    });
-
     // Generate embedding for the query
     const queryEmbedding = await openai.embeddings.create({
       model: 'text-embedding-3-small',
       input: message,
     });
 
-    // Search for relevant documents (increased from 3 to 5 for better diversity)
-    const searchResults = await collection.query({
-      queryEmbeddings: [queryEmbedding.data[0].embedding],
-      nResults: 5, // Increased from 3 to 5
+    // Search for relevant documents using Firebase Vector Search
+    const collectionRef = adminDb.collection('olga_knowledge_base');
+    
+    // Note: Firebase Vector Search requires a specific query format
+    // For now, we'll fetch all documents and do similarity search in memory
+    // In production, you'd use Firebase's vector search capabilities
+    const snapshot = await collectionRef.get();
+    const documents = [];
+    
+    snapshot.forEach(doc => {
+      const data = doc.data();
+      documents.push({
+        id: doc.id,
+        content: data.content,
+        source: data.source,
+        metadata: data.metadata,
+        embedding: data.embedding
+      });
     });
 
-    console.log(`📚 Found ${searchResults.documents[0].length} relevant documents`);
+    console.log(`📚 Found ${documents.length} documents in Firebase`);
+
+    // Calculate cosine similarity between query and all documents
+    const queryVector = queryEmbedding.data[0].embedding;
+    const similarities = documents.map(doc => {
+      const dotProduct = queryVector.reduce((sum, val, i) => sum + val * doc.embedding[i], 0);
+      const queryMagnitude = Math.sqrt(queryVector.reduce((sum, val) => sum + val * val, 0));
+      const docMagnitude = Math.sqrt(doc.embedding.reduce((sum, val) => sum + val * val, 0));
+      const similarity = dotProduct / (queryMagnitude * docMagnitude);
+      return {
+        ...doc,
+        similarity,
+        distance: 1 - similarity // Convert to distance (lower is better)
+      };
+    });
+
+    // Sort by similarity (highest first) and take top 5
+    const topResults = similarities
+      .sort((a, b) => b.similarity - a.similarity)
+      .slice(0, 5);
+
+    console.log(`🎯 Selected ${topResults.length} most relevant documents`);
 
     // Deduplicate sources and select the best chunks
     const sourceMap = new Map();
@@ -81,17 +115,17 @@ export default async function handler(req, res) {
       distances: []
     };
 
-    for (let i = 0; i < searchResults.documents[0].length; i++) {
-      const source = searchResults.metadatas[0][i].source;
-      const distance = searchResults.distances[0][i];
+    for (const result of topResults) {
+      const source = result.source;
+      const distance = result.distance;
       
       // Keep only the best (lowest distance) chunk from each source
       if (!sourceMap.has(source) || distance < sourceMap.get(source).distance) {
         sourceMap.set(source, {
-          document: searchResults.documents[0][i],
-          metadata: searchResults.metadatas[0][i],
+          document: result.content,
+          metadata: result.metadata,
           distance: distance,
-          index: i
+          index: result.id
         });
       }
     }
@@ -150,8 +184,7 @@ Answer as Olga would:`;
 
     // Calculate confidence scores properly
     const calculateConfidence = (distance) => {
-      // ChromaDB uses cosine distance (0 = perfect match, 2 = completely opposite)
-      // Improved confidence calculation that's more generous for semantic matches
+      // Convert distance to confidence score (0-100)
       // Distance 0.0-0.5: Excellent match (85-100%)
       // Distance 0.5-1.0: Good match (70-85%)
       // Distance 1.0-1.5: Fair match (50-70%)
