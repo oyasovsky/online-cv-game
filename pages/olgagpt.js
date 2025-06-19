@@ -384,8 +384,8 @@ export default function Game() {
     <>
       <ParallaxBackground />
       <div className="min-h-screen flex flex-col p-6 relative z-10 w-full lg:w-1/2 lg:mx-auto">
-        {/* Minimal Navigation */}
-        <div className="flex justify-between items-center mb-4">
+        {/* Minimalist Navigation - moved inside main container, above first glass-card */}
+        <div className="flex justify-between items-center mb-4 w-full">
           <a 
             href="/" 
             className="text-white/60 hover:text-white/80 transition-colors text-sm"
@@ -396,13 +396,11 @@ export default function Game() {
             href="/Olga_Yasovsky_CV.pdf" 
             target="_blank" 
             rel="noopener noreferrer"
-            download="Olga_Yasovsky_CV.pdf"
             className="text-white/60 hover:text-white/80 transition-colors text-sm"
           >
-            📄 CV
+            📄 View Classic CV
           </a>
         </div>
-        
         {/* Header */}
         <div className="glass-card p-6 mb-6 text-center">
           <h1 className="section-title">OlgaGPT - Interactive CV</h1>

@@ -1,0 +1,37 @@
+{
+  "name": "online-cv-game",
+  "version": "1.0.0",
+  "description": "Interactive CV site with RAG assistant",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "export": "next build && next export",
+    "deploy": "npm run build && firebase deploy",
+    "create-embeddings": "node scripts/create-embeddings.js",
+    "setup-firebase": "node scripts/setup-firebase.js",
+    "setup-env": "node scripts/setup-env.js",
+    "fix-env": "node scripts/fix-env.js",
+    "debug-env": "node scripts/debug-env.js",
+    "fix-private-key": "node scripts/fix-private-key.js",
+    "fix-pem-key": "node scripts/fix-pem-key.js",
+    "check-private-key": "node scripts/check-private-key.js",
+    "setup-audit-rules": "node scripts/setup-audit-rules.js",
+    "test-audit": "node scripts/test-audit.js"
+  },
+  "dependencies": {
+    "dotenv": "^16.5.0",
+    "firebase": "^11.9.1",
+    "firebase-admin": "^13.4.0",
+    "next": "^14.2.30",
+    "openai": "^4.28.0",
+    "react": "18.2.0",
+    "react-dom": "18.2.0"
+  },
+  "devDependencies": {
+    "autoprefixer": "^10.4.0",
+    "postcss": "^8.4.0",
+    "tailwindcss": "^3.3.0"
+  }
+}
