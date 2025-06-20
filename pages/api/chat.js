@@ -1,3 +1,5 @@
+import { getOpenAIKey } from '../../lib/env-helper';
+
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
     res.status(405).end();
@@ -5,7 +7,9 @@ export default async function handler(req, res) {
   }
 
   const { message, history = [] } = req.body;
-  const apiKey = process.env.OPENAI_API_KEY;
+  
+  // Get API key using the helper function
+  const apiKey = getOpenAIKey();
 
   const body = {
     model: 'gpt-3.5-turbo',

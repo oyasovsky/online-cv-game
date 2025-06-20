@@ -1,10 +1,11 @@
 import OpenAI from 'openai';
 import { adminDb } from '../../lib/firebase-admin';
+import { getOpenAIKey } from '../../lib/env-helper';
 const auditLogger = require('../../lib/firebase-audit');
 
 // Initialize clients
 const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
+  apiKey: getOpenAIKey(),
 });
 
 // OlgaGPT system prompt

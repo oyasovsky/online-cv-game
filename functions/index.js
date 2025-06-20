@@ -1,15 +1,24 @@
-const functions = require('firebase-functions');
-     const { createServer } = require('http');
-     const { parse } = require('url');
-     const next = require('next');
+const functions = require("firebase-functions");
+const next = require("next");
 
-     const dev = process.env.NODE_ENV !== 'production';
-     const app = next({ dev });
-     const handle = app.getRequestHandler();
+// Parameterized configuration
+const { defineString } = require('firebase-functions/params');
 
-     exports.nextjsServer = functions.https.onRequest((req, res) => {
-       return app.prepare().then(() => {
-         const parsedUrl = parse(req.url, true);
-         return handle(req, res, parsedUrl);
-       });
-     });
+// Define parameters for secrets/config.
+// The Firebase Admin SDK automatically finds credentials in a deployed environment.
+const OPENAI_API_KEY = defineString('OPENAI_API_KEY');
+
+module.exports = {
+  OPENAI_API_KEY,
+};
+
+const dev = process.env.NODE_ENV !== "production";
+const app = next({
+  dev,
+  conf: { distDir: "../.next" } // <-- This is critical!
+});
+const handle = app.getRequestHandler();
+
+exports.nextjsServer = functions.https.onRequest((req, res) => {
+  return app.prepare().then(() => handle(req, res));
+});

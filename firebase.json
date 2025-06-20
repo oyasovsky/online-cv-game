@@ -1,33 +1,30 @@
 {
   "hosting": {
-    "public": "public",
+    "source": ".",
     "ignore": [
       "firebase.json",
       "**/.*",
       "**/node_modules/**"
     ],
-    "rewrites": [
-      {
-        "source": "/api/**",
-        "function": "nextjs-server"
-      },
-      {
-        "source": "**",
-        "function": "nextjs-server"
-      } 
-    ]
+    "frameworksBackend": {
+      "region": "europe-west1"
+    }
   },
-  "functions": {
-    "source": "functions",
-    "runtime": "nodejs18",
-    "ignore": [
-      "node_modules",
-      ".git",
-      "firebase-debug.log",
-      "firebase-debug.*.log",
-      "*.local",
-      "out",
-      ".next"
-    ]
-  }
+  "functions": [
+    {
+      "source": "functions",
+      "runtime": "nodejs18",
+      "ignore": [
+        "node_modules",
+        ".git",
+        "firebase-debug.log",
+        "firebase-debug.*.log",
+        "*.local"
+      ],
+      "codebase": "default",
+      "predeploy": [
+        "npm --prefix \"$RESOURCE_DIR\" run lint"
+      ]
+    }
+  ]
 }
