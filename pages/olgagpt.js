@@ -10,6 +10,7 @@ export default function Game() {
   const [isClient, setIsClient] = useState(false);
   const [sessionId, setSessionId] = useState(null);
   const [showSampleQuestions, setShowSampleQuestions] = useState(true);
+  const [showFollowUpFooter, setShowFollowUpFooter] = useState(false);
   
   // Ensure component only renders on client side to prevent hydration errors
   useEffect(() => {
@@ -325,7 +326,10 @@ export default function Game() {
             
             {/* Chat messages container */}
             {(messages.length > 0 || isLoading) && (
-              <div className="flex-1 overflow-y-auto mb-6 glass-card p-6">
+              <div
+                className={`chat-main flex-1 overflow-y-auto mb-6 glass-card p-6`}
+                style={shouldShowFollowUp ? { borderBottomLeftRadius: 0, borderBottomRightRadius: 0 } : {}}
+              >
                 {messages.map((m, idx) => (
                   <ChatBubble 
                     key={idx} 
@@ -346,61 +350,72 @@ export default function Game() {
             
             {/* Follow-up Questions - Show after each answer */}
             {shouldShowFollowUp && (
-              <div className="follow-up-questions glass-card p-4 mb-6 animate-in fade-in duration-300">
-                <div className="flex items-center justify-between mb-3">
-                  <div className="flex items-center space-x-2">
-                    <h4 className="text-sm font-medium text-white/80">💭 What would you like to know next?</h4>
-                    <span className="text-xs text-white/50">
-                      ({askedQuestions.size}/{sampleQuestions.length} asked)
-                    </span>
-                    <div className="flex items-center space-x-1 text-xs">
-                      <span className="text-blue-300">👥 {Array.from(askedQuestions).filter(q => questionCategories.leadership.includes(q)).length}</span>
-                      <span className="text-white/30">|</span>
-                      <span className="text-green-300">⚙️ {Array.from(askedQuestions).filter(q => questionCategories.technical.includes(q)).length}</span>
-                    </div>
-                  </div>
-                  <button 
-                    onClick={startOver} 
-                    className="text-xs text-white/60 hover:text-white/80 transition-colors"
+              <div
+                className={`follow-up-questions glass-card mb-6 transition-all duration-300 overflow-hidden rounded-t-none ${showFollowUpFooter ? 'max-h-[500px] opacity-100' : 'max-h-12 opacity-80'}`}
+                style={{ borderTopLeftRadius: 0, borderTopRightRadius: 0, marginTop: '-1.5rem' }}
+              >
+                <button
+                  className="flex items-center justify-between w-full px-4 py-2 text-base font-normal text-white/80 hover:text-white/90 focus:outline-none bg-transparent border-none"
+                  onClick={() => setShowFollowUpFooter((prev) => !prev)}
+                  aria-expanded={showFollowUpFooter}
+                  aria-controls="follow-up-footer-accordion"
+                  style={{ boxShadow: 'none' }}
+                >
+                  <span className="tracking-tight">💭 What would you like to know next?</span>
+                  <span
+                    className={`transition-transform duration-200 ml-2 text-white/60 text-lg ${showFollowUpFooter ? 'rotate-180' : 'rotate-0'}`}
+                    style={{ display: 'inline-block' }}
                   >
-                    Start over
-                  </button>
-                </div>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
-                  {getContextualQuestions.slice(0, 6).map((question, index) => {
-                    const isLeadership = questionCategories.leadership.includes(question.text);
-                    const isTechnical = questionCategories.technical.includes(question.text);
-                    return (
-                      <button
-                        key={index}
-                        onClick={() => handleSampleQuestion(question.id)}
-                        className={`text-left p-2 rounded-md transition-all duration-200 border text-sm hover:scale-[1.02] ${
-                          isLeadership 
-                            ? 'bg-blue-500/10 hover:bg-blue-500/20 border-blue-500/20 hover:border-blue-500/40' 
-                            : 'bg-green-500/10 hover:bg-green-500/20 border-green-500/20 hover:border-green-500/40'
-                        }`}
-                      >
-                        <div className="flex items-center space-x-2">
-                          <span className={`text-xs px-1 py-0.5 rounded ${
+                    <svg
+                      width="20"
+                      height="20"
+                      viewBox="0 0 20 20"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="inline-block align-middle"
+                    >
+                      <path d="M6 8l4 4 4-4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                    </svg>
+                  </span>
+                </button>
+                {showFollowUpFooter && (
+                  <div id="follow-up-footer-accordion" className="p-4 pt-0 grid grid-cols-1 md:grid-cols-2 gap-2">
+                    {getContextualQuestions.slice(0, 6).map((question, index) => {
+                      const isLeadership = questionCategories.leadership.includes(question.text);
+                      const isTechnical = questionCategories.technical.includes(question.text);
+                      return (
+                        <button
+                          key={index}
+                          onClick={() => handleSampleQuestion(question.id)}
+                          className={`text-left p-2 rounded-md transition-all duration-200 border text-sm hover:scale-[1.02] ${
                             isLeadership 
-                              ? 'bg-blue-500/20 text-blue-300' 
-                              : 'bg-green-500/20 text-green-300'
-                          }`}>
-                            {isLeadership ? '👥' : '⚙️'}
-                          </span>
-                          <span className="body-text text-sm">{question.text}</span>
-                        </div>
-                      </button>
-                    );
-                  })}
-                </div>
-                {askedQuestions.size >= sampleQuestions.length && (
-                  <div className="mt-3 text-xs text-white/50 text-center">
-                    ✨ You&apos;ve seen all the questions! Click `&#34;`Start over`&#34;` to begin again.
+                              ? 'bg-blue-500/10 hover:bg-blue-500/20 border-blue-500/20 hover:border-blue-500/40' 
+                              : 'bg-green-500/10 hover:bg-green-500/20 border-green-500/20 hover:border-green-500/40'
+                          }`}
+                        >
+                          <div className="flex items-center space-x-2">
+                            <span className={`text-xs px-1 py-0.5 rounded ${
+                              isLeadership 
+                                ? 'bg-blue-500/20 text-blue-300' 
+                                : 'bg-green-500/20 text-green-300'
+                            }`}>
+                              {isLeadership ? '👥' : '⚙️'}
+                            </span>
+                            <span className="body-text text-sm">{question.text}</span>
+                          </div>
+                        </button>
+                      );
+                    })}
+                    {askedQuestions.size >= sampleQuestions.length && (
+                      <div className="mt-3 text-xs text-white/50 text-center col-span-2">
+                        ✨ You&apos;ve seen all the questions! Click <b>Start over</b> to begin again.
+                      </div>
+                    )}
                   </div>
                 )}
               </div>
             )}
+            
             {/* Input container */}
             <div className="glass-card p-6">
               <div className="flex items-center space-x-4">
