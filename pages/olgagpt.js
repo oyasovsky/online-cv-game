@@ -15,60 +15,27 @@ export default function Game() {
     setIsClient(true);
   }, []);
 
-  const sampleQuestions = [
-    "How do you build teams that ship — even in chaos?",
-    "What's the smartest way you've used GenAI in production?",
-    "What makes your leadership style different?",
-    "How do you drive innovation when everything's on fire?",
-    "What's your favorite failure — and why?",
-    "How do you stay technical without becoming the bottleneck?",
-    "How do you turn conflict into culture?",
-    "What's your approach to remote team management?",
-    "How do you measure team success?",
-    "What's your secret to high team retention?",
-    "How do you stay current with AI trends?",
-    "What's your take on AI replacing developers?",
-    "How do you evaluate new AI tools for the team?",
-    "What's the biggest AI mistake you've seen?",
-    "How do you build AI literacy in your teams?",
-    "What's your AI strategy for the next 2 years?",
-    "What's your approach to risk-taking?",
-    "How do you create a culture of learning?",
-    "What's the best advice you've ever received?",
-    "How do you help teams recover from setbacks?",
-    "What's your philosophy on experimentation?",
-    "How do you balance innovation with stability?",
-    "How do you encourage creativity in your teams?",
-    "What's your process for evaluating new ideas?",
-    "How do you balance innovation with delivery?",
-    "What's the most innovative project you've led?",
-    "How do you handle resistance to change?",
-    "What's your innovation budget strategy?",
-    "How do you stay current with technology?",
-    "What's your code review philosophy?",
-    "How do you handle technical debt?",
-    "What's your approach to architecture decisions?",
-    "How do you balance speed with quality?",
-    "What's your testing strategy?",
-    "Tell me more about your management philosophy",
-    "What's your biggest professional achievement?",
-    "How do you handle stress and pressure?",
-    "What's your communication style?",
-    "How do you make difficult decisions?",
-    "What drives you as a leader?"
-  ];
+  const alwaysShowQuestion = "How did you build this site?";
 
-  // Categorize questions into leadership and technical buckets
-  const questionCategories = {
-    leadership: [
+  const sampleQuestions = [
+    alwaysShowQuestion,
+    ...[
       "How do you build teams that ship — even in chaos?",
+      "What's the smartest way you've used GenAI in production?",
       "What makes your leadership style different?",
       "How do you drive innovation when everything's on fire?",
       "What's your favorite failure — and why?",
+      "How do you stay technical without becoming the bottleneck?",
       "How do you turn conflict into culture?",
       "What's your approach to remote team management?",
       "How do you measure team success?",
       "What's your secret to high team retention?",
+      "How do you stay current with AI trends?",
+      "What's your take on AI replacing developers?",
+      "How do you evaluate new AI tools for the team?",
+      "What's the biggest AI mistake you've seen?",
+      "How do you build AI literacy in your teams?",
+      "What's your AI strategy for the next 2 years?",
       "What's your approach to risk-taking?",
       "How do you create a culture of learning?",
       "What's the best advice you've ever received?",
@@ -81,36 +48,79 @@ export default function Game() {
       "What's the most innovative project you've led?",
       "How do you handle resistance to change?",
       "What's your innovation budget strategy?",
+      "How do you stay current with technology?",
+      "What's your code review philosophy?",
+      "How do you handle technical debt?",
+      "What's your approach to architecture decisions?",
+      "How do you balance speed with quality?",
+      "What's your testing strategy?",
       "Tell me more about your management philosophy",
       "What's your biggest professional achievement?",
       "How do you handle stress and pressure?",
       "What's your communication style?",
       "How do you make difficult decisions?",
       "What drives you as a leader?"
+    ].filter(q => q !== alwaysShowQuestion)
+  ];
+
+  // Categorize questions into leadership and technical buckets
+  const questionCategories = {
+    leadership: [
+      alwaysShowQuestion,
+      ...[
+        "How do you build teams that ship — even in chaos?",
+        "What makes your leadership style different?",
+        "How do you drive innovation when everything's on fire?",
+        "What's your favorite failure — and why?",
+        "How do you turn conflict into culture?",
+        "What's your approach to remote team management?",
+        "How do you measure team success?",
+        "What's your secret to high team retention?",
+        "What's your approach to risk-taking?",
+        "How do you create a culture of learning?",
+        "What's the best advice you've ever received?",
+        "How do you help teams recover from setbacks?",
+        "What's your philosophy on experimentation?",
+        "How do you balance innovation with stability?",
+        "How do you encourage creativity in your teams?",
+        "What's your process for evaluating new ideas?",
+        "How do you balance innovation with delivery?",
+        "What's the most innovative project you've led?",
+        "How do you handle resistance to change?",
+        "What's your innovation budget strategy?",
+        "Tell me more about your management philosophy",
+        "What's your biggest professional achievement?",
+        "How do you handle stress and pressure?",
+        "What's your communication style?",
+        "How do you make difficult decisions?",
+        "What drives you as a leader?"
+      ].filter(q => q !== alwaysShowQuestion)
     ],
     technical: [
-      "What's the smartest way you've used GenAI in production?",
-      "How do you stay technical without becoming the bottleneck?",
-      "How do you stay current with AI trends?",
-      "What's your take on AI replacing developers?",
-      "How do you evaluate new AI tools for the team?",
-      "What's the biggest AI mistake you've seen?",
-      "How do you build AI literacy in your teams?",
-      "What's your AI strategy for the next 2 years?",
-      "How do you stay current with technology?",
-      "What's your code review philosophy?",
-      "How do you handle technical debt?",
-      "What's your approach to architecture decisions?",
-      "How do you balance speed with quality?",
-      "What's your testing strategy?"
+      alwaysShowQuestion,
+      ...[
+        "What's the smartest way you've used GenAI in production?",
+        "How do you stay technical without becoming the bottleneck?",
+        "How do you stay current with AI trends?",
+        "What's your take on AI replacing developers?",
+        "How do you evaluate new AI tools for the team?",
+        "What's the biggest AI mistake you've seen?",
+        "How do you build AI literacy in your teams?",
+        "What's your AI strategy for the next 2 years?",
+        "How do you stay current with technology?",
+        "What's your code review philosophy?",
+        "How do you handle technical debt?",
+        "What's your approach to architecture decisions?",
+        "How do you balance speed with quality?",
+        "What's your testing strategy?"
+      ].filter(q => q !== alwaysShowQuestion)
     ]
   };
 
-  // Get balanced questions (3 leadership + 3 technical) - memoized
+  // Get balanced questions (3 leadership + 3 technical, always include alwaysShowQuestion in first batch)
   const getBalancedQuestions = useMemo(() => {
     const leadershipUnasked = questionCategories.leadership.filter(q => !askedQuestions.has(q));
     const technicalUnasked = questionCategories.technical.filter(q => !askedQuestions.has(q));
-    
     // If we've asked all questions in a category, reset that category
     if (leadershipUnasked.length === 0) {
       leadershipUnasked.push(...questionCategories.leadership.slice(0, 3));
@@ -118,14 +128,15 @@ export default function Game() {
     if (technicalUnasked.length === 0) {
       technicalUnasked.push(...questionCategories.technical.slice(0, 3));
     }
-    
     // Take 3 from each category
-    const leadershipQuestions = leadershipUnasked.slice(0, 3);
-    const technicalQuestions = technicalUnasked.slice(0, 3);
-    
+    let leadershipQuestions = leadershipUnasked.slice(0, 3);
+    let technicalQuestions = technicalUnasked.slice(0, 3);
+    // Ensure alwaysShowQuestion is present in the first batch
+    if (!leadershipQuestions.includes(alwaysShowQuestion) && !technicalQuestions.includes(alwaysShowQuestion)) {
+      technicalQuestions[0] = alwaysShowQuestion;
+    }
     // Combine questions - use deterministic order during SSR, random on client
     const combined = [...leadershipQuestions, ...technicalQuestions];
-    
     if (isClient) {
       // Only shuffle on client side to prevent hydration errors
       return combined.sort(() => Math.random() - 0.5);
