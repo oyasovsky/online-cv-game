@@ -9,112 +9,75 @@ export default function Game() {
   const [askedQuestions, setAskedQuestions] = useState(new Set());
   const [isClient, setIsClient] = useState(false);
   const [sessionId, setSessionId] = useState(null);
+  const [showSampleQuestions, setShowSampleQuestions] = useState(true);
   
   // Ensure component only renders on client side to prevent hydration errors
   useEffect(() => {
     setIsClient(true);
   }, []);
 
-  const alwaysShowQuestion = "How did you build this site?";
+  // Collapse sample questions after first question is asked
+  useEffect(() => {
+    if (messages.length === 1) {
+      setShowSampleQuestions(false);
+    }
+  }, [messages.length]);
 
-  const sampleQuestions = [
-    alwaysShowQuestion,
-    ...[
-      "How do you build teams that ship — even in chaos?",
-      "What's the smartest way you've used GenAI in production?",
-      "What makes your leadership style different?",
-      "How do you drive innovation when everything's on fire?",
-      "What's your favorite failure — and why?",
-      "How do you stay technical without becoming the bottleneck?",
-      "How do you turn conflict into culture?",
-      "What's your approach to remote team management?",
-      "How do you measure team success?",
-      "What's your secret to high team retention?",
-      "How do you stay current with AI trends?",
-      "What's your take on AI replacing developers?",
-      "How do you evaluate new AI tools for the team?",
-      "What's the biggest AI mistake you've seen?",
-      "How do you build AI literacy in your teams?",
-      "What's your AI strategy for the next 2 years?",
-      "What's your approach to risk-taking?",
-      "How do you create a culture of learning?",
-      "What's the best advice you've ever received?",
-      "How do you help teams recover from setbacks?",
-      "What's your philosophy on experimentation?",
-      "How do you balance innovation with stability?",
-      "How do you encourage creativity in your teams?",
-      "What's your process for evaluating new ideas?",
-      "How do you balance innovation with delivery?",
-      "What's the most innovative project you've led?",
-      "How do you handle resistance to change?",
-      "What's your innovation budget strategy?",
-      "How do you stay current with technology?",
-      "What's your code review philosophy?",
-      "How do you handle technical debt?",
-      "What's your approach to architecture decisions?",
-      "How do you balance speed with quality?",
-      "What's your testing strategy?",
-      "Tell me more about your management philosophy",
-      "What's your biggest professional achievement?",
-      "How do you handle stress and pressure?",
-      "What's your communication style?",
-      "How do you make difficult decisions?",
-      "What drives you as a leader?"
-    ].filter(q => q !== alwaysShowQuestion)
+  // Unified questions array with category
+  const questions = [
+    { text: "How did you build this site?", category: "technical" },
+    { text: "How do you build teams that ship — even in chaos?", category: "leadership" },
+    { text: "What's the smartest way you've used GenAI in production?", category: "technical" },
+    { text: "What makes your leadership style different?", category: "leadership" },
+    { text: "How do you drive innovation when everything's on fire?", category: "leadership" },
+    { text: "What's your favorite failure — and why?", category: "leadership" },
+    { text: "How do you stay technical without becoming the bottleneck?", category: "technical" },
+    { text: "How do you turn conflict into culture?", category: "leadership" },
+    { text: "What's your approach to remote team management?", category: "leadership" },
+    { text: "How do you measure team success?", category: "leadership" },
+    { text: "What's your secret to high team retention?", category: "leadership" },
+    { text: "How do you stay current with AI trends?", category: "technical" },
+    { text: "What's your take on AI replacing developers?", category: "technical" },
+    { text: "How do you evaluate new AI tools for the team?", category: "technical" },
+    { text: "What's the biggest AI mistake you've seen?", category: "technical" },
+    { text: "How do you build AI literacy in your teams?", category: "technical" },
+    { text: "What's your AI strategy for the next 2 years?", category: "technical" },
+    { text: "What's your approach to risk-taking?", category: "leadership" },
+    { text: "How do you create a culture of learning?", category: "leadership" },
+    { text: "What's the best advice you've ever received?", category: "leadership" },
+    { text: "How do you help teams recover from setbacks?", category: "leadership" },
+    { text: "What's your philosophy on experimentation?", category: "leadership" },
+    { text: "How do you balance innovation with stability?", category: "leadership" },
+    { text: "How do you encourage creativity in your teams?", category: "leadership" },
+    { text: "What's your process for evaluating new ideas?", category: "leadership" },
+    { text: "How do you balance innovation with delivery?", category: "leadership" },
+    { text: "What's the most innovative project you've led?", category: "leadership" },
+    { text: "How do you handle resistance to change?", category: "leadership" },
+    { text: "What's your innovation budget strategy?", category: "leadership" },
+    { text: "How do you stay current with technology?", category: "technical" },
+    { text: "What's your code review philosophy?", category: "technical" },
+    { text: "How do you handle technical debt?", category: "technical" },
+    { text: "What's your approach to architecture decisions?", category: "technical" },
+    { text: "How do you balance speed with quality?", category: "technical" },
+    { text: "What's your testing strategy?", category: "technical" },
+    { text: "Tell me more about your management philosophy", category: "leadership" },
+    { text: "What's your biggest professional achievement?", category: "leadership" },
+    { text: "How do you handle stress and pressure?", category: "leadership" },
+    { text: "What's your communication style?", category: "leadership" },
+    { text: "How do you make difficult decisions?", category: "leadership" },
+    { text: "What drives you as a leader?", category: "leadership" }
   ];
 
-  // Categorize questions into leadership and technical buckets
+  // Always show this question first
+  const alwaysShowQuestion = questions[0].text;
+
+  // Derive sampleQuestions (all questions, in order)
+  const sampleQuestions = questions.map(q => q.text);
+
+  // Derive questionCategories
   const questionCategories = {
-    leadership: [
-      alwaysShowQuestion,
-      ...[
-        "How do you build teams that ship — even in chaos?",
-        "What makes your leadership style different?",
-        "How do you drive innovation when everything's on fire?",
-        "What's your favorite failure — and why?",
-        "How do you turn conflict into culture?",
-        "What's your approach to remote team management?",
-        "How do you measure team success?",
-        "What's your secret to high team retention?",
-        "What's your approach to risk-taking?",
-        "How do you create a culture of learning?",
-        "What's the best advice you've ever received?",
-        "How do you help teams recover from setbacks?",
-        "What's your philosophy on experimentation?",
-        "How do you balance innovation with stability?",
-        "How do you encourage creativity in your teams?",
-        "What's your process for evaluating new ideas?",
-        "How do you balance innovation with delivery?",
-        "What's the most innovative project you've led?",
-        "How do you handle resistance to change?",
-        "What's your innovation budget strategy?",
-        "Tell me more about your management philosophy",
-        "What's your biggest professional achievement?",
-        "How do you handle stress and pressure?",
-        "What's your communication style?",
-        "How do you make difficult decisions?",
-        "What drives you as a leader?"
-      ].filter(q => q !== alwaysShowQuestion)
-    ],
-    technical: [
-      alwaysShowQuestion,
-      ...[
-        "What's the smartest way you've used GenAI in production?",
-        "How do you stay technical without becoming the bottleneck?",
-        "How do you stay current with AI trends?",
-        "What's your take on AI replacing developers?",
-        "How do you evaluate new AI tools for the team?",
-        "What's the biggest AI mistake you've seen?",
-        "How do you build AI literacy in your teams?",
-        "What's your AI strategy for the next 2 years?",
-        "How do you stay current with technology?",
-        "What's your code review philosophy?",
-        "How do you handle technical debt?",
-        "What's your approach to architecture decisions?",
-        "How do you balance speed with quality?",
-        "What's your testing strategy?"
-      ].filter(q => q !== alwaysShowQuestion)
-    ]
+    leadership: questions.filter(q => q.category === 'leadership').map(q => q.text),
+    technical: questions.filter(q => q.category === 'technical').map(q => q.text)
   };
 
   // Get balanced questions (3 leadership + 3 technical, always include alwaysShowQuestion in first batch)
@@ -148,50 +111,53 @@ export default function Game() {
 
   // Contextual follow-up questions based on conversation
   const getContextualQuestions = useMemo(() => {
-    if (messages.length === 0) return getBalancedQuestions;
-    
+    // Always include 'How did you build this site?' if it hasn't been asked
+    const howBuilt = alwaysShowQuestion;
+    const howBuiltUnasked = !askedQuestions.has(howBuilt);
+
+    if (messages.length === 0) {
+      return getBalancedQuestions;
+    }
     const lastMessage = messages[messages.length - 1];
-    if (!lastMessage || lastMessage.fromUser) return getBalancedQuestions;
-    
+    if (!lastMessage || lastMessage.fromUser) {
+      // Prepend if not asked
+      const qs = getBalancedQuestions;
+      return howBuiltUnasked && !qs.includes(howBuilt) ? [howBuilt, ...qs] : qs;
+    }
     const content = lastMessage.content.toLowerCase();
-    
     // Helper function to filter out asked questions and ensure balance
     const filterUnaskedAndBalance = (leadershipQs, technicalQs) => {
       const leadershipUnasked = leadershipQs.filter(q => !askedQuestions.has(q));
       const technicalUnasked = technicalQs.filter(q => !askedQuestions.has(q));
-      
       // Take up to 3 from each category
       const leadershipSelected = leadershipUnasked.slice(0, 3);
       const technicalSelected = technicalUnasked.slice(0, 3);
-      
       // If we don't have enough from one category, fill with balanced questions
       if (leadershipSelected.length < 3 || technicalSelected.length < 3) {
         const balanced = getBalancedQuestions;
         const leadershipNeeded = 3 - leadershipSelected.length;
         const technicalNeeded = 3 - technicalSelected.length;
-        
         const balancedLeadership = balanced.filter(q => 
           questionCategories.leadership.includes(q) && 
           !leadershipSelected.includes(q)
         ).slice(0, leadershipNeeded);
-        
         const balancedTechnical = balanced.filter(q => 
           questionCategories.technical.includes(q) && 
           !technicalSelected.includes(q)
         ).slice(0, technicalNeeded);
-        
-        return [...leadershipSelected, ...balancedLeadership, ...technicalSelected, ...balancedTechnical];
+        let result = [...leadershipSelected, ...balancedLeadership, ...technicalSelected, ...balancedTechnical];
+        // Prepend if not asked
+        return howBuiltUnasked && !result.includes(howBuilt) ? [howBuilt, ...result] : result;
       }
-      
       // Shuffle the combined array for variety
       const combined = [...leadershipSelected, ...technicalSelected];
-      
       if (isClient) {
         // Only shuffle on client side to prevent hydration errors
-        return combined.sort(() => Math.random() - 0.5);
+        const shuffled = combined.sort(() => Math.random() - 0.5);
+        return howBuiltUnasked && !shuffled.includes(howBuilt) ? [howBuilt, ...shuffled] : shuffled;
       } else {
         // Return in deterministic order during SSR
-        return combined;
+        return howBuiltUnasked && !combined.includes(howBuilt) ? [howBuilt, ...combined] : combined;
       }
     };
     
@@ -287,7 +253,8 @@ export default function Game() {
     }
     
     // Default contextual questions - use balanced questions
-    return getBalancedQuestions;
+    const qs = getBalancedQuestions;
+    return howBuiltUnasked && !qs.includes(howBuilt) ? [howBuilt, ...qs] : qs;
   }, [messages, askedQuestions, getBalancedQuestions]);
 
   const sendMessage = async () => {
@@ -428,38 +395,70 @@ export default function Game() {
           </div>
         ) : (
           <>
-            {/* Sample Questions - Only show on first visit */}
+            {/* Sample Questions - Minimalist accordion style */}
             {messages.length === 0 && (
-              <div className="glass-card p-6 mb-6">
-                <h3 className="text-lg font-semibold mb-4 text-white">💡 Try asking me about:</h3>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                  {getContextualQuestions.map((question, index) => {
-                    const isLeadership = questionCategories.leadership.includes(question);
-                    const isTechnical = questionCategories.technical.includes(question);
-                    return (
-                      <button
-                        key={index}
-                        onClick={() => handleSampleQuestion(question)}
-                        className={`text-left p-3 rounded-lg transition-colors border ${
-                          isLeadership 
-                            ? 'bg-blue-500/10 hover:bg-blue-500/20 border-blue-500/20 hover:border-blue-500/40' 
-                            : 'bg-green-500/10 hover:bg-green-500/20 border-green-500/20 hover:border-green-500/40'
-                        }`}
-                      >
-                        <div className="flex items-center space-x-2">
-                          <span className={`text-xs px-1 py-0.5 rounded ${
-                            isLeadership 
-                              ? 'bg-blue-500/20 text-blue-300' 
-                              : 'bg-green-500/20 text-green-300'
-                          }`}>
-                            {isLeadership ? '👥' : '⚙️'}
-                          </span>
-                          <span className="body-text">{question}</span>
-                        </div>
-                      </button>
-                    );
-                  })}
-                </div>
+              <div className="follow-up-questions glass-card p-4 mb-6">
+                <button
+                  className="flex items-center justify-between w-full mb-2 text-base font-normal text-white/80 hover:text-white/90 focus:outline-none bg-transparent border-none px-0 py-0"
+                  onClick={() => setShowSampleQuestions((prev) => !prev)}
+                  aria-expanded={showSampleQuestions}
+                  aria-controls="sample-questions-accordion"
+                  style={{ boxShadow: 'none' }}
+                >
+                  <span className="tracking-tight">💡 Suggested questions</span>
+                  <span
+                    className={`transition-transform duration-200 ml-2 text-white/60 text-lg ${showSampleQuestions ? 'rotate-180' : 'rotate-0'}`}
+                    style={{ display: 'inline-block' }}
+                  >
+                    {/* Modern chevron SVG icon */}
+                    <svg
+                      width="20"
+                      height="20"
+                      viewBox="0 0 20 20"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="inline-block align-middle"
+                    >
+                      <path d="M6 8l4 4 4-4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                    </svg>
+                  </span>
+                </button>
+                {showSampleQuestions && (
+                  <div id="sample-questions-accordion" className="grid grid-cols-1 md:grid-cols-2 gap-2 mt-2">
+                    {(() => {
+                      // Ensure 'How did you build this site?' is always first and deduplicated, and only 6 questions are shown
+                      const initialQs = getContextualQuestions;
+                      const deduped = [alwaysShowQuestion, ...initialQs.filter(q => q !== alwaysShowQuestion)];
+                      return deduped.slice(0, 6).map((question, index) => {
+                        const isLeadership = questionCategories.leadership.includes(question);
+                        const isTechnical = questionCategories.technical.includes(question);
+                        return (
+                          <button
+                            key={index}
+                            onClick={() => handleSampleQuestion(question)}
+                            className={`text-left p-2 rounded-md transition-colors border border-transparent hover:border-white/10 text-sm bg-white/5 hover:bg-white/10 ${
+                              isLeadership 
+                                ? 'text-blue-200' 
+                                : 'text-green-200'
+                            }`}
+                            style={{ fontWeight: 400 }}
+                          >
+                            <div className="flex items-center space-x-2">
+                              <span className={`text-xs px-1 py-0.5 rounded ${
+                                isLeadership 
+                                  ? 'bg-blue-500/10 text-blue-300' 
+                                  : 'bg-green-500/10 text-green-300'
+                              }`}>
+                                {isLeadership ? '👥' : '⚙️'}
+                              </span>
+                              <span className="body-text text-sm font-normal">{question}</span>
+                            </div>
+                          </button>
+                        );
+                      });
+                    })()}
+                  </div>
+                )}
               </div>
             )}
             
@@ -486,7 +485,7 @@ export default function Game() {
             
             {/* Follow-up Questions - Show after each answer */}
             {shouldShowFollowUp && (
-              <div className="glass-card p-4 mb-6 animate-in fade-in duration-300">
+              <div className="follow-up-questions glass-card p-4 mb-6 animate-in fade-in duration-300">
                 <div className="flex items-center justify-between mb-3">
                   <div className="flex items-center space-x-2">
                     <h4 className="text-sm font-medium text-white/80">💭 What would you like to know next?</h4>
@@ -507,7 +506,7 @@ export default function Game() {
                   </button>
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
-                  {getContextualQuestions.map((question, index) => {
+                  {getContextualQuestions.slice(0, 6).map((question, index) => {
                     const isLeadership = questionCategories.leadership.includes(question);
                     const isTechnical = questionCategories.technical.includes(question);
                     return (
@@ -536,12 +535,11 @@ export default function Game() {
                 </div>
                 {askedQuestions.size >= sampleQuestions.length && (
                   <div className="mt-3 text-xs text-white/50 text-center">
-                    ✨ You`&apos;`ve seen all the questions! Click ֿ`&quot;`Start over`&quot;` to begin again.
+                    ✨ You&apos;ve seen all the questions! Click "Start over" to begin again.
                   </div>
                 )}
               </div>
             )}
-            
             {/* Input container */}
             <div className="glass-card p-6">
               <div className="flex items-center space-x-4">
