@@ -535,7 +535,7 @@ export default function Game() {
                 </div>
                 {askedQuestions.size >= sampleQuestions.length && (
                   <div className="mt-3 text-xs text-white/50 text-center">
-                    ✨ You&apos;ve seen all the questions! Click "Start over" to begin again.
+                    ✨ You&apos;ve seen all the questions! Click `&#34;`Start over`&#34;` to begin again.
                   </div>
                 )}
               </div>
