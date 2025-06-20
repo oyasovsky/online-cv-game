@@ -8,14 +8,14 @@ export default function Home() {
   return (
     <>
       <ParallaxBackground />
-      <div className="min-h-screen flex flex-col items-center justify-center text-center relative z-10 px-4 w-full lg:w-1/2 lg:mx-auto">
+      <div className="min-h-screen flex flex-col items-center justify-center text-center relative z-10 px-2 sm:px-4 w-full lg:w-1/2 lg:mx-auto">
         <Head>
           <title>Olga Yasovsky - CV</title>
         </Head>
         
         {/* Main hero section */}
-        <div className="  p-12 mb-8 max-w-2xl">
-          <h1 className="hero-title mb-4">Olga Yasovsky</h1>
+        <div className="p-4 sm:p-8 md:p-12 mb-4 sm:mb-8 max-w-2xl">
+          <h1 className="hero-title text-3xl sm:text-5xl mb-4">Olga Yasovsky</h1>
           
           {/* Typewriter effect for role descriptions */}
           <div className="mb-8">
@@ -23,21 +23,19 @@ export default function Home() {
           </div>
         </div>
         
-        {/* Action buttons */}
-        <div className=" p-8 mb-8">
-          <div className="space-x-6">
-            <a
-              href="/Olga_Yasovsky_CV.pdf"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="cv-button"
-            >
-              📄 View Classic CV
-            </a>
-            <a href="/olgagpt">
-              <Button>Chat with OlgaGPT</Button>
-            </a>
-          </div>
+        {/* Action buttons - mobile friendly */}
+        <div className="flex flex-col sm:flex-row gap-4 items-center justify-center">
+          <a
+            href="/Olga_Yasovsky_CV.pdf"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="cv-button w-full sm:w-auto"
+          >
+            📄 View Classic CV
+          </a>
+          <a href="/olgagpt" className="w-full sm:w-auto">
+            <Button>Chat with OlgaGPT</Button>
+          </a>
         </div>
         
       </div>

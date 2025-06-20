@@ -9,11 +9,16 @@ body {
               url('/bg-o.jpg');
   background-size: cover;
   background-position: center;
-  background-attachment: fixed;
+  background-attachment: scroll; /* Default for mobile */
   background-repeat: no-repeat;
   min-height: 100vh;
   overflow-x: hidden;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+@media (min-width: 640px) {
+  body {
+    background-attachment: fixed;
+  }
 }
 
 /* Gradient overlay for depth - matching olga-yasovsky.com */
@@ -111,13 +116,18 @@ body {
 
 /* Text styles matching olga-yasovsky.com */
 .hero-title {
-  font-size: 3.5rem;
+  font-size: 2rem;
   font-weight: 700;
   background: linear-gradient(135deg, #ffffff 0%, #e0e0e0 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+@media (min-width: 640px) {
+  .hero-title {
+    font-size: 3.5rem;
+  }
 }
 
 .hero-subtitle {
@@ -128,10 +138,15 @@ body {
 }
 
 .section-title {
-  font-size: 2.5rem;
+  font-size: 1.5rem;
   font-weight: 600;
   color: #ffffff;
   margin-bottom: 1rem;
+}
+@media (min-width: 640px) {
+  .section-title {
+    font-size: 2.5rem;
+  }
 }
 
 .body-text {
@@ -142,10 +157,16 @@ body {
 
 /* Typewriter effect styles */
 .typewriter-container {
-  min-height: 2rem;
+  min-height: 4.8em; /* enough for 3 lines on mobile */
   display: flex;
   align-items: center;
   justify-content: center;
+  overflow-y: hidden;
+}
+@media (min-width: 640px) {
+  .typewriter-container {
+    min-height: 2.2em; /* desktop: usually only 1 line needed */
+  }
 }
 
 .typewriter-text {
@@ -179,6 +200,14 @@ body {
   font-weight: 500;
   transition: all 0.3s ease;
   backdrop-filter: blur(10px);
+  white-space: normal;
+  text-align: center;
+  font-size: 1rem; /* text-base for mobile */
+}
+@media (min-width: 640px) {
+  .cv-button {
+    font-size: 1.125rem; /* text-lg for desktop */
+  }
 }
 
 .cv-button:hover {
