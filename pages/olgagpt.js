@@ -25,51 +25,51 @@ export default function Game() {
 
   // Unified questions array with category
   const questions = [
-    { text: "How did you build this site?", category: "technical" },
-    { text: "How do you build teams that ship — even in chaos?", category: "leadership" },
-    { text: "What's the smartest way you've used GenAI in production?", category: "technical" },
-    { text: "What makes your leadership style different?", category: "leadership" },
-    { text: "How do you drive innovation when everything's on fire?", category: "leadership" },
-    { text: "What's your favorite failure — and why?", category: "leadership" },
-    { text: "How do you stay technical without becoming the bottleneck?", category: "technical" },
-    { text: "How do you turn conflict into culture?", category: "leadership" },
-    { text: "What's your approach to remote team management?", category: "leadership" },
-    { text: "How do you measure team success?", category: "leadership" },
-    { text: "What's your secret to high team retention?", category: "leadership" },
-    { text: "How do you stay current with AI trends?", category: "technical" },
-    { text: "What's your take on AI replacing developers?", category: "technical" },
-    { text: "How do you evaluate new AI tools for the team?", category: "technical" },
-    { text: "What's the biggest AI mistake you've seen?", category: "technical" },
-    { text: "How do you build AI literacy in your teams?", category: "technical" },
-    { text: "What's your AI strategy for the next 2 years?", category: "technical" },
-    { text: "What's your approach to risk-taking?", category: "leadership" },
-    { text: "How do you create a culture of learning?", category: "leadership" },
-    { text: "What's the best advice you've ever received?", category: "leadership" },
-    { text: "How do you help teams recover from setbacks?", category: "leadership" },
-    { text: "What's your philosophy on experimentation?", category: "leadership" },
-    { text: "How do you balance innovation with stability?", category: "leadership" },
-    { text: "How do you encourage creativity in your teams?", category: "leadership" },
-    { text: "What's your process for evaluating new ideas?", category: "leadership" },
-    { text: "How do you balance innovation with delivery?", category: "leadership" },
-    { text: "What's the most innovative project you've led?", category: "leadership" },
-    { text: "How do you handle resistance to change?", category: "leadership" },
-    { text: "What's your innovation budget strategy?", category: "leadership" },
-    { text: "How do you stay current with technology?", category: "technical" },
-    { text: "What's your code review philosophy?", category: "technical" },
-    { text: "How do you handle technical debt?", category: "technical" },
-    { text: "What's your approach to architecture decisions?", category: "technical" },
-    { text: "How do you balance speed with quality?", category: "technical" },
-    { text: "What's your testing strategy?", category: "technical" },
-    { text: "Tell me more about your management philosophy", category: "leadership" },
-    { text: "What's your biggest professional achievement?", category: "leadership" },
-    { text: "How do you handle stress and pressure?", category: "leadership" },
-    { text: "What's your communication style?", category: "leadership" },
-    { text: "How do you make difficult decisions?", category: "leadership" },
-    { text: "What drives you as a leader?", category: "leadership" }
+    { id: 'how-did-you-build-this-site', text: "How did you build this site?", category: "technical" },
+    { id: 'how-do-you-build-teams-that-ship-even-in-chaos', text: "How do you build teams that ship — even in chaos?", category: "leadership" },
+    { id: 'whats-the-smartest-way-youve-used-genai-in-production', text: "What's the smartest way you've used GenAI in production?", category: "technical" },
+    { id: 'what-makes-your-leadership-style-different', text: "What makes your leadership style different?", category: "leadership" },
+    { id: 'how-do-you-drive-innovation-when-everythings-on-fire', text: "How do you drive innovation when everything's on fire?", category: "leadership" },
+    { id: 'whats-your-favorite-failure-and-why', text: "What's your favorite failure — and why?", category: "leadership" },
+    { id: 'how-do-you-stay-technical-without-becoming-the-bottleneck', text: "How do you stay technical without becoming the bottleneck?", category: "technical" },
+    { id: 'how-do-you-turn-conflict-into-culture', text: "How do you turn conflict into culture?", category: "leadership" },
+    { id: 'whats-your-approach-to-remote-team-management', text: "What's your approach to remote team management?", category: "leadership" },
+    { id: 'how-do-you-measure-team-success', text: "How do you measure team success?", category: "leadership" },
+    { id: 'whats-your-secret-to-high-team-retention', text: "What's your secret to high team retention?", category: "leadership" },
+    { id: 'how-do-you-stay-current-with-ai-trends', text: "How do you stay current with AI trends?", category: "technical" },
+    { id: 'whats-your-take-on-ai-replacing-developers', text: "What's your take on AI replacing developers?", category: "technical" },
+    { id: 'how-do-you-evaluate-new-ai-tools-for-the-team', text: "How do you evaluate new AI tools for the team?", category: "technical" },
+    { id: 'whats-the-biggest-ai-mistake-youve-seen', text: "What's the biggest AI mistake you've seen?", category: "technical" },
+    { id: 'how-do-you-build-ai-literacy-in-your-teams', text: "How do you build AI literacy in your teams?", category: "technical" },
+    { id: 'whats-your-ai-strategy-for-the-next-2-years', text: "What's your AI strategy for the next 2 years?", category: "technical" },
+    { id: 'whats-your-approach-to-risk-taking', text: "What's your approach to risk-taking?", category: "leadership" },
+    { id: 'how-do-you-create-a-culture-of-learning', text: "How do you create a culture of learning?", category: "leadership" },
+    { id: 'whats-the-best-advice-youve-ever-received', text: "What's the best advice you've ever received?", category: "leadership" },
+    { id: 'how-do-you-help-teams-recover-from-setbacks', text: "How do you help teams recover from setbacks?", category: "leadership" },
+    { id: 'whats-your-philosophy-on-experimentation', text: "What's your philosophy on experimentation?", category: "leadership" },
+    { id: 'how-do-you-balance-innovation-with-stability', text: "How do you balance innovation with stability?", category: "leadership" },
+    { id: 'how-do-you-encourage-creativity-in-your-teams', text: "How do you encourage creativity in your teams?", category: "leadership" },
+    { id: 'whats-your-process-for-evaluating-new-ideas', text: "What's your process for evaluating new ideas?", category: "leadership" },
+    { id: 'how-do-you-balance-innovation-with-delivery', text: "How do you balance innovation with delivery?", category: "leadership" },
+    { id: 'whats-the-most-innovative-project-youve-led', text: "What's the most innovative project you've led?", category: "leadership" },
+    { id: 'how-do-you-handle-resistance-to-change', text: "How do you handle resistance to change?", category: "leadership" },
+    { id: 'whats-your-innovation-budget-strategy', text: "What's your innovation budget strategy?", category: "leadership" },
+    { id: 'how-do-you-stay-current-with-technology', text: "How do you stay current with technology?", category: "technical" },
+    { id: 'whats-your-code-review-philosophy', text: "What's your code review philosophy?", category: "technical" },
+    { id: 'how-do-you-handle-technical-debt', text: "How do you handle technical debt?", category: "technical" },
+    { id: 'whats-your-approach-to-architecture-decisions', text: "What's your approach to architecture decisions?", category: "technical" },
+    { id: 'how-do-you-balance-speed-with-quality', text: "How do you balance speed with quality?", category: "technical" },
+    { id: 'whats-your-testing-strategy', text: "What's your testing strategy?", category: "technical" },
+    { id: 'tell-me-more-about-your-management-philosophy', text: "Tell me more about your management philosophy", category: "leadership" },
+    { id: 'whats-your-biggest-professional-achievement', text: "What's your biggest professional achievement?", category: "leadership" },
+    { id: 'how-do-you-handle-stress-and-pressure', text: "How do you handle stress and pressure?", category: "leadership" },
+    { id: 'whats-your-communication-style', text: "What's your communication style?", category: "leadership" },
+    { id: 'how-do-you-make-difficult-decisions', text: "How do you make difficult decisions?", category: "leadership" },
+    { id: 'what-drives-you-as-a-leader', text: "What drives you as a leader?", category: "leadership" }
   ];
 
   // Always show this question first
-  const alwaysShowQuestion = questions[0].text;
+  const alwaysShowQuestion = questions[0];
 
   // Derive sampleQuestions (all questions, in order)
   const sampleQuestions = questions.map(q => q.text);
@@ -111,159 +111,19 @@ export default function Game() {
 
   // Contextual follow-up questions based on conversation
   const getContextualQuestions = useMemo(() => {
-    // Always include 'How did you build this site?' if it hasn't been asked
-    const howBuilt = alwaysShowQuestion;
-    const howBuiltUnasked = !askedQuestions.has(howBuilt);
-
-    if (messages.length === 0) {
-      return getBalancedQuestions;
-    }
-    const lastMessage = messages[messages.length - 1];
-    if (!lastMessage || lastMessage.fromUser) {
-      // Prepend if not asked
-      const qs = getBalancedQuestions;
-      return howBuiltUnasked && !qs.includes(howBuilt) ? [howBuilt, ...qs] : qs;
-    }
-    const content = lastMessage.content.toLowerCase();
-    // Helper function to filter out asked questions and ensure balance
-    const filterUnaskedAndBalance = (leadershipQs, technicalQs) => {
-      const leadershipUnasked = leadershipQs.filter(q => !askedQuestions.has(q));
-      const technicalUnasked = technicalQs.filter(q => !askedQuestions.has(q));
-      // Take up to 3 from each category
-      const leadershipSelected = leadershipUnasked.slice(0, 3);
-      const technicalSelected = technicalUnasked.slice(0, 3);
-      // If we don't have enough from one category, fill with balanced questions
-      if (leadershipSelected.length < 3 || technicalSelected.length < 3) {
-        const balanced = getBalancedQuestions;
-        const leadershipNeeded = 3 - leadershipSelected.length;
-        const technicalNeeded = 3 - technicalSelected.length;
-        const balancedLeadership = balanced.filter(q => 
-          questionCategories.leadership.includes(q) && 
-          !leadershipSelected.includes(q)
-        ).slice(0, leadershipNeeded);
-        const balancedTechnical = balanced.filter(q => 
-          questionCategories.technical.includes(q) && 
-          !technicalSelected.includes(q)
-        ).slice(0, technicalNeeded);
-        let result = [...leadershipSelected, ...balancedLeadership, ...technicalSelected, ...balancedTechnical];
-        // Prepend if not asked
-        return howBuiltUnasked && !result.includes(howBuilt) ? [howBuilt, ...result] : result;
-      }
-      // Shuffle the combined array for variety
-      const combined = [...leadershipSelected, ...technicalSelected];
-      if (isClient) {
-        // Only shuffle on client side to prevent hydration errors
-        const shuffled = combined.sort(() => Math.random() - 0.5);
-        return howBuiltUnasked && !shuffled.includes(howBuilt) ? [howBuilt, ...shuffled] : shuffled;
-      } else {
-        // Return in deterministic order during SSR
-        return howBuiltUnasked && !combined.includes(howBuilt) ? [howBuilt, ...combined] : combined;
-      }
-    };
-    
-    // Contextual questions based on the last answer
-    if (content.includes('leadership') || content.includes('team')) {
-      return filterUnaskedAndBalance([
-        "How do you handle difficult team members?",
-        "What's your approach to remote team management?",
-        "How do you measure team success?",
-        "Tell me about a time you had to let someone go",
-        "How do you balance technical and people leadership?",
-        "What's your secret to high team retention?"
-      ], [
-        "How do you stay current with technology?",
-        "What's your code review philosophy?",
-        "How do you handle technical debt?",
-        "What's your approach to architecture decisions?",
-        "How do you balance speed with quality?",
-        "What's your testing strategy?"
-      ]);
-    }
-    
-    if (content.includes('genai') || content.includes('ai') || content.includes('artificial intelligence')) {
-      return filterUnaskedAndBalance([
-        "How do you create a culture of learning?",
-        "What's your philosophy on experimentation?",
-        "How do you balance innovation with stability?",
-        "How do you encourage creativity in your teams?",
-        "What's your process for evaluating new ideas?",
-        "How do you handle resistance to change?"
-      ], [
-        "How do you stay current with AI trends?",
-        "What's your take on AI replacing developers?",
-        "How do you evaluate new AI tools for the team?",
-        "What's the biggest AI mistake you've seen?",
-        "How do you build AI literacy in your teams?",
-        "What's your AI strategy for the next 2 years?"
-      ]);
-    }
-    
-    if (content.includes('failure') || content.includes('mistake') || content.includes('learn')) {
-      return filterUnaskedAndBalance([
-        "What's your approach to risk-taking?",
-        "How do you create a culture of learning?",
-        "What's the best advice you've ever received?",
-        "How do you help teams recover from setbacks?",
-        "What's your philosophy on experimentation?",
-        "How do you balance innovation with stability?"
-      ], [
-        "How do you handle technical debt?",
-        "What's your approach to architecture decisions?",
-        "How do you balance speed with quality?",
-        "What's your testing strategy?",
-        "How do you stay current with technology?",
-        "What's your code review philosophy?"
-      ]);
-    }
-    
-    if (content.includes('innovation') || content.includes('creative') || content.includes('new')) {
-      return filterUnaskedAndBalance([
-        "How do you encourage creativity in your teams?",
-        "What's your process for evaluating new ideas?",
-        "How do you balance innovation with delivery?",
-        "What's the most innovative project you've led?",
-        "How do you handle resistance to change?",
-        "What's your innovation budget strategy?"
-      ], [
-        "How do you stay current with technology?",
-        "What's your code review philosophy?",
-        "How do you handle technical debt?",
-        "What's your approach to architecture decisions?",
-        "How do you balance speed with quality?",
-        "What's your testing strategy?"
-      ]);
-    }
-    
-    if (content.includes('technical') || content.includes('code') || content.includes('development')) {
-      return filterUnaskedAndBalance([
-        "How do you balance technical and people leadership?",
-        "What's your approach to remote team management?",
-        "How do you measure team success?",
-        "How do you handle difficult team members?",
-        "What's your secret to high team retention?",
-        "Tell me about a time you had to let someone go"
-      ], [
-        "How do you stay current with technology?",
-        "What's your code review philosophy?",
-        "How do you handle technical debt?",
-        "What's your approach to architecture decisions?",
-        "How do you balance speed with quality?",
-        "What's your testing strategy?"
-      ]);
-    }
-    
-    // Default contextual questions - use balanced questions
-    const qs = getBalancedQuestions;
-    return howBuiltUnasked && !qs.includes(howBuilt) ? [howBuilt, ...qs] : qs;
-  }, [messages, askedQuestions, getBalancedQuestions]);
+    // Get all unasked questions in order, return full objects
+    const unasked = questions.filter(q => !askedQuestions.has(q.id));
+    return unasked.slice(0, 6);
+  }, [messages, askedQuestions, questions]);
 
   const sendMessage = async () => {
     if (!input.trim() || isLoading) return;
     
-    // Track the asked question
+    // Try to find a matching question ID
+    const match = questions.find(q => q.text === input.trim());
     setAskedQuestions(prev => {
-      const newSet = new Set([...prev, input.trim()]);
-      console.log('📝 Tracking custom question:', input.trim());
+      const newSet = new Set([...prev, match ? match.id : input.trim()]);
+      console.log('📝 Tracking custom question:', match ? match.id : input.trim());
       console.log('📊 Total asked questions:', newSet.size);
       return newSet;
     });
@@ -334,15 +194,16 @@ export default function Game() {
     }
   };
 
-  const handleSampleQuestion = (question) => {
-    // Track the asked question
+  const handleSampleQuestion = (questionId) => {
     setAskedQuestions(prev => {
-      const newSet = new Set([...prev, question]);
-      console.log('📝 Tracking asked question:', question);
+      const newSet = new Set([...prev, questionId]);
+      console.log('📝 Tracking asked question:', questionId);
       console.log('📊 Total asked questions:', newSet.size);
       return newSet;
     });
-    setInput(question);
+    // Find the question object by id
+    const q = questions.find(q => q.id === questionId);
+    setInput(q ? q.text : questionId);
   };
 
   const startOver = () => {
@@ -428,14 +289,14 @@ export default function Game() {
                     {(() => {
                       // Ensure 'How did you build this site?' is always first and deduplicated, and only 6 questions are shown
                       const initialQs = getContextualQuestions;
-                      const deduped = [alwaysShowQuestion, ...initialQs.filter(q => q !== alwaysShowQuestion)];
+                      const deduped = [alwaysShowQuestion, ...initialQs.filter(q => q.id !== alwaysShowQuestion.id)];
                       return deduped.slice(0, 6).map((question, index) => {
-                        const isLeadership = questionCategories.leadership.includes(question);
-                        const isTechnical = questionCategories.technical.includes(question);
+                        const isLeadership = questionCategories.leadership.includes(question.text);
+                        const isTechnical = questionCategories.technical.includes(question.text);
                         return (
                           <button
                             key={index}
-                            onClick={() => handleSampleQuestion(question)}
+                            onClick={() => handleSampleQuestion(question.id)}
                             className={`text-left p-2 rounded-md transition-colors border border-transparent hover:border-white/10 text-sm bg-white/5 hover:bg-white/10 ${
                               isLeadership 
                                 ? 'text-blue-200' 
@@ -451,7 +312,7 @@ export default function Game() {
                               }`}>
                                 {isLeadership ? '👥' : '⚙️'}
                               </span>
-                              <span className="body-text text-sm font-normal">{question}</span>
+                              <span className="body-text text-sm font-normal">{question.text}</span>
                             </div>
                           </button>
                         );
@@ -507,12 +368,12 @@ export default function Game() {
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
                   {getContextualQuestions.slice(0, 6).map((question, index) => {
-                    const isLeadership = questionCategories.leadership.includes(question);
-                    const isTechnical = questionCategories.technical.includes(question);
+                    const isLeadership = questionCategories.leadership.includes(question.text);
+                    const isTechnical = questionCategories.technical.includes(question.text);
                     return (
                       <button
                         key={index}
-                        onClick={() => handleSampleQuestion(question)}
+                        onClick={() => handleSampleQuestion(question.id)}
                         className={`text-left p-2 rounded-md transition-all duration-200 border text-sm hover:scale-[1.02] ${
                           isLeadership 
                             ? 'bg-blue-500/10 hover:bg-blue-500/20 border-blue-500/20 hover:border-blue-500/40' 
@@ -527,7 +388,7 @@ export default function Game() {
                           }`}>
                             {isLeadership ? '👥' : '⚙️'}
                           </span>
-                          <span className="body-text text-sm">{question}</span>
+                          <span className="body-text text-sm">{question.text}</span>
                         </div>
                       </button>
                     );
