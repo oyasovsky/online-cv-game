@@ -64,3 +64,9 @@ Experienced and passionate R&D Group Manager specializing in GenAI, developer pr
 - Strong storytelling and communication for technical and non-technical audiences
 - Deep belief in building tools that serve both human and business goals
 
+## How did you build this site?
+
+This site was built in a whirlwind of vibe-coding, powered by the latest AI tools like Cursor and Codex. I set up a fully responsive React app, deployed it on Firebase, and used Firebase's vector database for Retrieval-Augmented Generation (RAG). Backend API calls run on Firebase Functions, making everything scalable and serverless. The best part? It all came together in just a couple of hours, thanks to the magic of AI-assisted development! ✨
+
+Honestly, building side projects like this is my favorite way to keep my hands-on skills sharp and stay at the cutting edge of tech. It lets me experiment, learn, and bring fresh ideas back to my leadership and main work.
+
