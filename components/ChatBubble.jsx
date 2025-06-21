@@ -25,6 +25,18 @@ export default function ChatBubble({ message, fromUser, sources, confidence }) {
       '<a href="https://www.spaceil.com/" target="_blank" rel="noopener noreferrer" class="text-blue-300 hover:text-blue-200 underline">$1</a>'
     );
     
+    // Link GitHub repository mentions when discussing the site
+    formatted = formatted.replace(
+      /(github|GitHub|GITHUB)\s+(repo|repository|project)/gi, 
+      '<a href="https://github.com/olgayas/online-cv-game" target="_blank" rel="noopener noreferrer" class="text-blue-300 hover:text-blue-200 underline">$1 $2</a>'
+    );
+    
+    // Link "this site" or "OlgaGPT site" mentions to GitHub
+    formatted = formatted.replace(
+      /(this site|OlgaGPT site|the site)/gi, 
+      '<a href="https://github.com/olgayas/online-cv-game" target="_blank" rel="noopener noreferrer" class="text-blue-300 hover:text-blue-200 underline">$1</a>'
+    );
+    
     // Wrap in paragraph tags
     formatted = `<p>${formatted}</p>`;
     

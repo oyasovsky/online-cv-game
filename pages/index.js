@@ -15,7 +15,7 @@ export default function Home() {
         
         {/* Main hero section */}
         <div className="p-4 sm:p-8 md:p-12 mb-4 sm:mb-8 max-w-2xl">
-          <h1 className="hero-title text-3xl sm:text-5xl mb-4">Olga Yasovsky</h1>
+          <h1 className="hero-title text-3xl sm:text-5xl sm:leading-tight mb-4">Olga Yasovsky</h1>
           
           {/* Typewriter effect for role descriptions */}
           <div className="mb-8">
