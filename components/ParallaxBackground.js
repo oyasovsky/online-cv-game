@@ -5,14 +5,20 @@ export default function ParallaxBackground({ backgroundImage = null }) {
 
   useEffect(() => {
     const handleMouseMove = (e) => {
-      setMousePosition({
+      const newPosition = {
         x: (e.clientX / window.innerWidth) * 100,
         y: (e.clientY / window.innerHeight) * 100,
-      });
+      };
+      setMousePosition(newPosition);
+      console.log('🖱️ Mouse moved:', newPosition);
     };
 
+    console.log('🎯 ParallaxBackground mounted, adding mouse listener');
     window.addEventListener('mousemove', handleMouseMove);
-    return () => window.removeEventListener('mousemove', handleMouseMove);
+    return () => {
+      console.log('🎯 ParallaxBackground unmounting, removing mouse listener');
+      window.removeEventListener('mousemove', handleMouseMove);
+    };
   }, []);
 
   return (
@@ -22,7 +28,7 @@ export default function ParallaxBackground({ backgroundImage = null }) {
         <div 
           className="absolute inset-0 bg-cover bg-center bg-no-repeat"
           style={{
-            backgroundImage: `url(${backgroundImage})`,
+            backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.7)), url(${backgroundImage})`,
             transform: `translate(${mousePosition.x * 0.02}px, ${mousePosition.y * 0.02}px)`
           }}
         />
