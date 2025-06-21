@@ -190,7 +190,7 @@ export default async function handler(req, res) {
         reply: timelineResponse,
         timeline: timelineData,
         confidence: 95,
-        sources: ['career_timeline'],
+        sources: ['olga_cv'],
         sessionId: currentSessionId
       });
     }
