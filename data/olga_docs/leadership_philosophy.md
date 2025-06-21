@@ -44,7 +44,7 @@ I stay deeply technical while leading teams, but I never use my technical knowle
 
 **My Approach:**
 - I code alongside my teams on critical features to stay connected to the work
-- I review pull requests and participate in technical discussions
+- I participate in technical discussions
 - I learn new technologies with my team rather than delegating all learning
 - I use my technical knowledge to remove bottlenecks, not create them
 

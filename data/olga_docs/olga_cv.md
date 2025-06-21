@@ -25,7 +25,7 @@ Experienced and passionate R&D Group Manager specializing in GenAI, developer pr
 
 - **JumpStart**: Conceptualized and led the development of an autonomous coding assistant agent
 - **AskDev**: Delivered a knowledge-rich RAG-based chatbot connected to real-time code and PR context
-- **MCP Hackathon**: Spearheaded internal ideation competitions that generated real product features
+- **MCP Server**: Spearheaded internal ideation competitions that generated real product features to our Company internal SDLC MCP server
 - **Internal GenAI Enablement**: Drove education and adoption of AI tooling for developers across org
 
 ---
@@ -57,7 +57,7 @@ Experienced and passionate R&D Group Manager specializing in GenAI, developer pr
 
 ---
 
-## Signature Traits
+## Signature Traits or what makes you speacial?
 
 - Radical authenticity and clarity
 - Outcome-first leadership in fast-changing environments

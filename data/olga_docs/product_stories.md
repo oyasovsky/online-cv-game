@@ -93,6 +93,39 @@
 - **Cultural Shift**: Transformed collaboration dynamics between US and Israel teams
 - **Lasting Impact**: Set the gold standard for async global product development in our group
 
+# Pro Bono Project: Volunteer Scheduling System for SpaceIL  
+**Role**: Creator & Developer  
+**Years Active**: 2012 – Present  
+**Status**: In Production  
+
+### About SpaceIL  
+[SpaceIL](https://www.spaceil.com/) is an Israeli non-profit organization that made history as the first private team to reach the moon. Today, its core mission is educational: to inspire the next generation of scientists and engineers through nationwide STEM education programs, school outreach, and public speaking.
+With hundreds of volunteers and an ever-growing list of school requests, SpaceIL faced a logistical problem - to efficiently connect the right volunteer to the right school, based on availability and location.
+
+### My Contribution  
+I initiated, led, designed and developed an **automated scheduling system** to streamline volunteer coordination. 
+I've built a team of volunteers and was directly hands on code, contributing more than 50% of the code.
+We've built a web app, based on Angular, backed up by Firebase Store and Functions for a cloud based solution that is scalable, cheap, and fast. 
+
+### My Technological stack 
+The system includes:
+- **School Request Portal** – Allows teachers to submit visit requests by date, language, and audience.
+- **Volunteer Matching Algorithm** – Matches speakers with schools based on criteria like location and availability.
+- **Admin Dashboard** – Gives SpaceIL staff visibility and override capabilities for special cases.
+- The technology stack is Angular framework for Front end. Using Firebase for Storage and backend functions including mailing mechanism.
+- It's all data driven backed with analytics and metrics
+
+This project was completed **pro bono** out of personal commitment to SpaceIL's mission and has been running in production since **2012**.
+
+### Impact  
+- In use for over a since 2022, helping scale SpaceIL’s outreach efforts.
+- Enabled **thousands of volunteer sessions** across Israel.
+- Reduced manual coordination workload significantly.
+- Contributed to **greater STEM exposure for students**, especially in peripheral areas.
+
+### What's in it for me?
+- Keep hands on and up to date with latest technology
+- Being involved in an exciting and educational STEM effort  
 
 ## Leadership in Product Development
 

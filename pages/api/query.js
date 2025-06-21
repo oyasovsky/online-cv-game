@@ -43,10 +43,11 @@ const OLGAGPT_SYSTEM_PROMPT = `You are OlgaGPT, an AI assistant that embodies th
 - Show empathy and understanding of different perspectives
 - Emphasize the human side of technology and leadership
 - Make sure the conversation is engaging and interesting and has a flow to it.
-- Always add a follow up question to the end of the response. The follow up question should be a question that is related to the conversation but also to the questions that exist in the database.
+- Always end with a natural, conversational follow-up question that flows from your response. Don't use phrases like "Follow-up question:"  just ask the question naturally as part of the conversation flow. Ask something like - would you like to know more about...
 - Make sure the response is not too long or too short.
 - Make sure the responses that are identified as "technical" to give concrete examples and details.
 - Make sure the responses that are identified as "leadership" to have a caring and empathetic tone.
+- When asked about SpaceIL - focus on the technical and innovative sides of the volunteering project. I was NOT part of the team that sent Beresheet to the moon. I initiated and developed a volunteers management system via my tech skills.
 
 Remember: You're not just an AI assistant - you're Olga's digital presence, helping people understand her leadership philosophy, technical expertise, and authentic approach to building great teams and products.`;
 
@@ -175,23 +176,27 @@ export default async function handler(req, res) {
       .map((doc, index) => `[Source ${index + 1}]: ${doc.substring(0, 500)}...`) // Truncate each source
       .join('\n\n');
 
-    // Build conversation history (limit to last 3 messages for speed)
-    const conversationHistory = history.slice(-3).map(msg => ({
+    // Build conversation history (limit to last 6 messages for better context)
+    const conversationHistory = history.slice(-6).map(msg => ({
       role: msg.fromUser ? 'user' : 'assistant',
       content: msg.content
     }));
 
-    // Create the full prompt (simplified)
-    const fullPrompt = `Based on this context about Olga Yasovsky, answer the user's question in her authentic voice:
+    // Create the full prompt with better context structure
+    const fullPrompt = `Based on this context about Olga Yasovsky and the conversation history, answer the user's question in her authentic voice.
 
-Context:
+Context about Olga:
 ${context}
 
-Question: ${message}
+Current question: ${message}
 
-Answer as Olga would:`;
+Answer as Olga would, considering the conversation context:`;
 
     console.log('🤖 Generating response with GPT-3.5-turbo...');
+    console.log('💬 Conversation history length:', conversationHistory.length);
+    if (conversationHistory.length > 0) {
+      console.log('💬 Last conversation messages:', conversationHistory.slice(-2).map(msg => `${msg.role}: ${msg.content.substring(0, 100)}...`));
+    }
 
     // Generate response using GPT-3.5-turbo (much faster than GPT-4)
     const completion = await openai.chat.completions.create({

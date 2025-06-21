@@ -19,6 +19,12 @@ export default function ChatBubble({ message, fromUser, sources, confidence }) {
     // Convert double line breaks to paragraph breaks
     formatted = formatted.replace(/\n\n/g, '</p><p>');
     
+    // Link SpaceIL mentions to their website
+    formatted = formatted.replace(
+      /(space-il|spaceIL|SpaceIL)/gi, 
+      '<a href="https://www.spaceil.com/" target="_blank" rel="noopener noreferrer" class="text-blue-300 hover:text-blue-200 underline">$1</a>'
+    );
+    
     // Wrap in paragraph tags
     formatted = `<p>${formatted}</p>`;
     

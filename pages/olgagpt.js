@@ -27,46 +27,28 @@ export default function Game() {
   // Unified questions array with category
   const questions = [
     { id: 'how-did-you-build-this-site', text: "How did you build this site?", category: "technical" },
-    { id: 'how-do-you-build-teams-that-ship-even-in-chaos', text: "How do you build teams that ship — even in chaos?", category: "leadership" },
-    { id: 'whats-the-smartest-way-youve-used-genai-in-production', text: "What's the smartest way you've used GenAI in production?", category: "technical" },
+    { id: 'what-are-your-signature-traits', text: "What are Olga's signature traits?", category: "leadership" },
+    { id: 'tell-me-about-volunteering', text: "Tell me about the SpaceIL volunteering project", category: "leadership" },
     { id: 'what-makes-your-leadership-style-different', text: "What makes your leadership style different?", category: "leadership" },
-    { id: 'how-do-you-drive-innovation-when-everythings-on-fire', text: "How do you drive innovation when everything's on fire?", category: "leadership" },
+    { id: 'how-do-you-drive-innovation-when-everythings-on-fire', text: "How do you drive innovation?", category: "leadership" },
     { id: 'whats-your-favorite-failure-and-why', text: "What's your favorite failure — and why?", category: "leadership" },
     { id: 'how-do-you-stay-technical-without-becoming-the-bottleneck', text: "How do you stay technical without becoming the bottleneck?", category: "technical" },
-    { id: 'how-do-you-turn-conflict-into-culture', text: "How do you turn conflict into culture?", category: "leadership" },
     { id: 'whats-your-approach-to-remote-team-management', text: "What's your approach to remote team management?", category: "leadership" },
     { id: 'how-do-you-measure-team-success', text: "How do you measure team success?", category: "leadership" },
-    { id: 'whats-your-secret-to-high-team-retention', text: "What's your secret to high team retention?", category: "leadership" },
     { id: 'how-do-you-stay-current-with-ai-trends', text: "How do you stay current with AI trends?", category: "technical" },
     { id: 'whats-your-take-on-ai-replacing-developers', text: "What's your take on AI replacing developers?", category: "technical" },
-    { id: 'how-do-you-evaluate-new-ai-tools-for-the-team', text: "How do you evaluate new AI tools for the team?", category: "technical" },
-    { id: 'whats-the-biggest-ai-mistake-youve-seen', text: "What's the biggest AI mistake you've seen?", category: "technical" },
     { id: 'how-do-you-build-ai-literacy-in-your-teams', text: "How do you build AI literacy in your teams?", category: "technical" },
     { id: 'whats-your-ai-strategy-for-the-next-2-years', text: "What's your AI strategy for the next 2 years?", category: "technical" },
     { id: 'whats-your-approach-to-risk-taking', text: "What's your approach to risk-taking?", category: "leadership" },
     { id: 'how-do-you-create-a-culture-of-learning', text: "How do you create a culture of learning?", category: "leadership" },
     { id: 'whats-the-best-advice-youve-ever-received', text: "What's the best advice you've ever received?", category: "leadership" },
-    { id: 'how-do-you-help-teams-recover-from-setbacks', text: "How do you help teams recover from setbacks?", category: "leadership" },
-    { id: 'whats-your-philosophy-on-experimentation', text: "What's your philosophy on experimentation?", category: "leadership" },
-    { id: 'how-do-you-balance-innovation-with-stability', text: "How do you balance innovation with stability?", category: "leadership" },
-    { id: 'how-do-you-encourage-creativity-in-your-teams', text: "How do you encourage creativity in your teams?", category: "leadership" },
-    { id: 'whats-your-process-for-evaluating-new-ideas', text: "What's your process for evaluating new ideas?", category: "leadership" },
     { id: 'how-do-you-balance-innovation-with-delivery', text: "How do you balance innovation with delivery?", category: "leadership" },
     { id: 'whats-the-most-innovative-project-youve-led', text: "What's the most innovative project you've led?", category: "leadership" },
-    { id: 'how-do-you-handle-resistance-to-change', text: "How do you handle resistance to change?", category: "leadership" },
-    { id: 'whats-your-innovation-budget-strategy', text: "What's your innovation budget strategy?", category: "leadership" },
     { id: 'how-do-you-stay-current-with-technology', text: "How do you stay current with technology?", category: "technical" },
-    { id: 'whats-your-code-review-philosophy', text: "What's your code review philosophy?", category: "technical" },
     { id: 'how-do-you-handle-technical-debt', text: "How do you handle technical debt?", category: "technical" },
-    { id: 'whats-your-approach-to-architecture-decisions', text: "What's your approach to architecture decisions?", category: "technical" },
     { id: 'how-do-you-balance-speed-with-quality', text: "How do you balance speed with quality?", category: "technical" },
-    { id: 'whats-your-testing-strategy', text: "What's your testing strategy?", category: "technical" },
     { id: 'tell-me-more-about-your-management-philosophy', text: "Tell me more about your management philosophy", category: "leadership" },
-    { id: 'whats-your-biggest-professional-achievement', text: "What's your biggest professional achievement?", category: "leadership" },
-    { id: 'how-do-you-handle-stress-and-pressure', text: "How do you handle stress and pressure?", category: "leadership" },
-    { id: 'whats-your-communication-style', text: "What's your communication style?", category: "leadership" },
-    { id: 'how-do-you-make-difficult-decisions', text: "How do you make difficult decisions?", category: "leadership" },
-    { id: 'what-drives-you-as-a-leader', text: "What drives you as a leader?", category: "leadership" }
+    { id: 'whats-your-biggest-professional-achievement', text: "What's your biggest professional achievement?", category: "leadership" }
   ];
 
   // Always show this question first
@@ -139,6 +121,11 @@ export default function Game() {
       const timeoutPromise = new Promise((_, reject) => 
         setTimeout(() => reject(new Error('Request timeout')), 20000) // 20 second timeout
       );
+
+      console.log('📤 Sending message with history length:', messages.length);
+      if (messages.length > 0) {
+        console.log('📤 Last 2 messages:', messages.slice(-2).map(msg => `${msg.fromUser ? 'User' : 'Assistant'}: ${msg.content.substring(0, 100)}...`));
+      }
 
       // Create the fetch promise
       const fetchPromise = fetch('/api/query', {
