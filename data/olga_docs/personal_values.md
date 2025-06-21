@@ -63,9 +63,6 @@ I'm a mother of three children, which has taught me patience, multitasking, and 
 ### The Importance of Staying Technical
 Even as a leader, I believe it's crucial to stay hands-on with technology. This doesn't mean I need to be the best coder on the team, but I need to understand the technical challenges my teams face and be able to contribute meaningfully to technical discussions.
 
-### Vibe Coding and Rapid Prototyping
-I love what I call "vibe coding" - the art of quickly building prototypes and MVPs to test ideas and learn new technologies. This approach helps me stay current with the latest tools and understand the developer experience firsthand.
-
 **Example: This Interactive CV Site**
 I built this entire interactive CV site in just a couple of hours using Next.js, OpenAI's API, and Firebase Vector Search for semantic retrieval. It's a perfect example of how I stay hands-on with technology - I had an idea for an interactive way to showcase my experience, and I just started coding. No over-engineering, no perfect architecture, just building something that works and demonstrates the concept.
 

@@ -119,10 +119,11 @@ export default function Game() {
     try {
       // Create a timeout promise
       const timeoutPromise = new Promise((_, reject) => 
-        setTimeout(() => reject(new Error('Request timeout')), 20000) // 20 second timeout
+        setTimeout(() => reject(new Error('Request timeout')), 45000) // 45 second timeout
       );
 
       console.log('📤 Sending message with history length:', messages.length);
+      console.log('⏰ Request started at:', new Date().toISOString());
       if (messages.length > 0) {
         console.log('📤 Last 2 messages:', messages.slice(-2).map(msg => `${msg.fromUser ? 'User' : 'Assistant'}: ${msg.content.substring(0, 100)}...`));
       }
@@ -147,6 +148,8 @@ export default function Game() {
       
       const data = await res.json();
       
+      console.log('✅ Request completed successfully at:', new Date().toISOString());
+      
       // Store session ID if returned from API
       if (data.sessionId && !sessionId) {
         setSessionId(data.sessionId);
@@ -168,7 +171,7 @@ export default function Game() {
       let errorMessage = "I'm sorry, I'm having trouble connecting right now. Please try again in a moment.";
       
       if (error.message === 'Request timeout') {
-        errorMessage = "I'm taking longer than usual to respond. This might be due to high demand. Please try again or ask a simpler question.";
+        errorMessage = "I'm taking longer than usual to respond (over 45 seconds). This might be due to high demand or a complex query. Please try again with a simpler question or wait a moment and retry.";
       } else if (error.message.includes('rate limit')) {
         errorMessage = "I'm getting a lot of requests right now. Please try again in a moment.";
       }

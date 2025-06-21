@@ -13,29 +13,20 @@ export default function ChatBubble({ message, fromUser, sources, confidence }) {
     // Convert **bold** to <strong> tags
     let formatted = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
     
+    // Convert *italic* to <em> tags
+    formatted = formatted.replace(/\*(.*?)\*/g, '<em>$1</em>');
+    
+    // Convert markdown links [text](url) to HTML links
+    formatted = formatted.replace(
+      /\[([^\]]+)\]\(([^)]+)\)/g, 
+      '<a href="$2" target="_blank" rel="noopener noreferrer" class="text-blue-300 hover:text-blue-200 underline">$1</a>'
+    );
+    
     // Convert line breaks to <br> tags
     formatted = formatted.replace(/\n/g, '<br />');
     
     // Convert double line breaks to paragraph breaks
     formatted = formatted.replace(/\n\n/g, '</p><p>');
-    
-    // Link SpaceIL mentions to their website
-    formatted = formatted.replace(
-      /(space-il|spaceIL|SpaceIL)/gi, 
-      '<a href="https://www.spaceil.com/" target="_blank" rel="noopener noreferrer" class="text-blue-300 hover:text-blue-200 underline">$1</a>'
-    );
-    
-    // Link GitHub repository mentions when discussing the site
-    formatted = formatted.replace(
-      /(github|GitHub|GITHUB)\s+(repo|repository|project)/gi, 
-      '<a href="https://github.com/olgayas/online-cv-game" target="_blank" rel="noopener noreferrer" class="text-blue-300 hover:text-blue-200 underline">$1 $2</a>'
-    );
-    
-    // Link "this site" or "OlgaGPT site" mentions to GitHub
-    formatted = formatted.replace(
-      /(this site|OlgaGPT site|the site)/gi, 
-      '<a href="https://github.com/olgayas/online-cv-game" target="_blank" rel="noopener noreferrer" class="text-blue-300 hover:text-blue-200 underline">$1</a>'
-    );
     
     // Wrap in paragraph tags
     formatted = `<p>${formatted}</p>`;

@@ -12,6 +12,7 @@ const openai = new OpenAI({
 const OLGAGPT_SYSTEM_PROMPT = `You are OlgaGPT, an AI assistant that embodies the personality and expertise of Olga Yasovsky, an experienced R&D leader and technology executive.
 
 **Your Personality:**
+- Talk as Olga would answer, in first tense
 - Direct but kind - you communicate clearly and honestly, but always with empathy
 - People-first leader who believes technology serves humanity
 - Passionate about GenAI, emerging technologies, and building great teams
@@ -49,7 +50,24 @@ const OLGAGPT_SYSTEM_PROMPT = `You are OlgaGPT, an AI assistant that embodies th
 - Make sure the responses that are identified as "leadership" to have a caring and empathetic tone.
 - When asked about SpaceIL - focus on the technical and innovative sides of the volunteering project. I was NOT part of the team that sent Beresheet to the moon. I initiated and developed a volunteers management system via my tech skills.
 
-Remember: You're not just an AI assistant - you're Olga's digital presence, helping people understand her leadership philosophy, technical expertise, and authentic approach to building great teams and products.`;
+**Formatting Guidelines:**
+- **MANDATORY**: Always use markdown link syntax for external references: [text](url)
+- **MANDATORY**: When mentioning SpaceIL, ALWAYS use: [SpaceIL](https://www.spaceil.com/)
+- **MANDATORY**: When mentioning "this site", OlgaGPT, or "this chat", ALWAYS use: [My GitHub Repo](https://github.com/oyasovsky/online-cv-game)
+- **MANDATORY**: When referencing technical aspects, ALWAYS suggest to visit the link to: [My GitHub](https://github.com/oyasovsky)
+- **MANDATORY**: When referencing leadership aspects, ALWAYS suggest to visit the link to: [My LinkedIn](https://www.linkedin.com/in/olga-yasovsky/)
+- Use **bold** for emphasis and important concepts
+- Use *italic* for subtle emphasis or technical terms
+- Use line breaks and paragraphs for readability
+
+**Link Examples:**
+- "I worked with [SpaceIL](https://www.spaceil.com/) on the volunteer management system"
+- "You can find the code for [My GitHub Repo](https://github.com/oyasovsky/online-cv-game) here"
+- "Check out my technical projects on [My GitHub](https://github.com/oyasovsky)"
+- "Connect with me on [My LinkedIn](https://www.linkedin.com/in/olga-yasovsky/) for leadership insights"
+
+Remember: You're not just an AI assistant - you're Olga's digital presence, helping people understand her leadership philosophy, technical expertise, and authentic approach to building great teams and products.
+`;
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
@@ -213,10 +231,37 @@ Answer as Olga would, considering the conversation context:`;
     const reply = completion.choices[0].message.content;
     const responseTime = Date.now() - startTime;
 
-    console.log('💬 Query processed successfully');
-    console.log('📊 Context sources:', deduplicatedResults.metadatas.map(m => m.source));
-    console.log('⏱️ Response length:', reply.length, 'characters');
-    console.log('🔍 Distances:', deduplicatedResults.distances);
+    // Log the original LLM response prominently
+    console.log('🤖 ORIGINAL LLM RESPONSE:');
+    console.log('='.repeat(50));
+    console.log(reply);
+    console.log('='.repeat(50));
+    console.log('📊 Response length:', reply.length, 'characters');
+    console.log('⏱️ Response time:', responseTime, 'ms');
+
+    // Post-process response to ensure links are included
+    const ensureLinks = (text) => {
+      let processed = text;
+      
+      console.log('🔧 Original response:', processed);
+      
+      processed = processed.replace(
+        /\[([^\]]+)\]\(https:\/\/My LinkedIn\.com\/([^)]+)\)/g,
+        '[$1](https://linkedin.com/$2)'
+      );
+      
+      console.log('🔧 Processed response:', processed);
+      
+      return processed;
+    };
+
+    const processedReply = ensureLinks(reply);
+
+    // Log the final processed response
+    console.log('🔧 FINAL PROCESSED RESPONSE:');
+    console.log('='.repeat(50));
+    console.log(processedReply);
+    console.log('='.repeat(50));
 
     // Calculate confidence scores properly
     const calculateConfidence = (distance) => {
@@ -257,7 +302,7 @@ Answer as Olga would, considering the conversation context:`;
       try {
         const questionData = {
           question: message,
-          response: reply,
+          response: processedReply,
           confidence: confidenceScores[0] || 0, // Use highest confidence score
           sources: deduplicatedResults.metadatas.map(m => m.source),
           responseTime,
@@ -274,7 +319,7 @@ Answer as Olga would, considering the conversation context:`;
     }
 
     res.status(200).json({
-      reply,
+      reply: processedReply,
       confidence: confidenceScores[0] || 0,
       sources: deduplicatedResults.metadatas.map(m => m.source),
       sessionId: currentSessionId
