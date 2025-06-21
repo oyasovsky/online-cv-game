@@ -5,8 +5,8 @@
 /* Using the actual background image from olga-yasovsky.com */
 body {
   @apply text-white;
-  background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.7)), 
-              url('/bg-o.jpg');
+  background: linear-gradient(rgba(0, 0, 0, 0.0), rgba(0, 0, 0, 0.7)), 
+              url('/bg-o.png');
   background-size: cover;
   background-position: center;
   background-attachment: scroll; /* Default for mobile */

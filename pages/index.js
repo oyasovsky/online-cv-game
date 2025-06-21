@@ -10,7 +10,8 @@ export default function Home() {
       <ParallaxBackground />
       <div className="min-h-screen flex flex-col items-center justify-center text-center relative z-10 px-2 sm:px-4 w-full lg:w-1/2 lg:mx-auto">
         <Head>
-          <title>Olga Yasovsky - CV</title>
+          <title>Olga Yasovsky - R&D Leader & Technology Executive | Interactive CV</title>
+          <meta name="description" content="Explore Olga Yasovsky's leadership philosophy, technical expertise, and authentic approach to building great teams. Interactive CV with AI-powered chat." />
         </Head>
         
         {/* Main hero section */}

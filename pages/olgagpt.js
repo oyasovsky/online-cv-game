@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import ChatBubble from '../components/ChatBubble';
 import ParallaxBackground from '../components/ParallaxBackground';
+import Head from 'next/head';
 
 export default function Game() {
   const [messages, setMessages] = useState([]);
@@ -27,8 +28,8 @@ export default function Game() {
   // Unified questions array with category
   const questions = [
     { id: 'how-did-you-build-this-site', text: "How did you build this site?", category: "technical" },
-    { id: 'what-are-your-signature-traits', text: "What are Olga's signature traits?", category: "leadership" },
-    { id: 'tell-me-about-volunteering', text: "Tell me about the SpaceIL volunteering project", category: "leadership" },
+    { id: 'what-are-your-signature-traits', text: "What are your signature traits?", category: "leadership" },
+    { id: 'tell-me-about-volunteering', text: "What's your relation to SpaceIL?", category: "technical" },
     { id: 'what-makes-your-leadership-style-different', text: "What makes your leadership style different?", category: "leadership" },
     { id: 'how-do-you-drive-innovation-when-everythings-on-fire', text: "How do you drive innovation?", category: "leadership" },
     { id: 'whats-your-favorite-failure-and-why', text: "What's your favorite failure — and why?", category: "leadership" },
@@ -212,7 +213,11 @@ export default function Game() {
 
   return (
     <>
-      <ParallaxBackground />
+      <Head>
+        <title>OlgaGPT - Chat with Olga Yasovsky | Interactive CV</title>
+        <meta name="description" content="Ask Olga Yasovsky anything about her leadership, experience, or values!" />
+      </Head>
+      <ParallaxBackground backgroundImage="/bg-o-left.png" />
       <div className="min-h-screen flex flex-col p-6 relative z-10 w-full lg:w-1/2 lg:mx-auto">
         {/* Minimalist Navigation - moved inside main container, above first glass-card */}
         <div className="flex justify-between items-center mb-4 w-full">

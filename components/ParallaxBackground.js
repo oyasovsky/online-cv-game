@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
-export default function ParallaxBackground() {
+export default function ParallaxBackground({ backgroundImage = null }) {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
 
   useEffect(() => {
@@ -17,6 +17,17 @@ export default function ParallaxBackground() {
 
   return (
     <div className="parallax-bg">
+      {/* Background image if specified */}
+      {backgroundImage && (
+        <div 
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+          style={{
+            backgroundImage: `url(${backgroundImage})`,
+            transform: `translate(${mousePosition.x * 0.02}px, ${mousePosition.y * 0.02}px)`
+          }}
+        />
+      )}
+      
       {/* Floating particles with parallax effect */}
       <div 
         className="floating-particle"
