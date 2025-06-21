@@ -103,7 +103,7 @@
 With hundreds of volunteers and an ever-growing list of school requests, SpaceIL faced a logistical problem - to efficiently connect the right volunteer to the right school, based on availability and location.
 
 ### My Contribution  
-I initiated, led, designed and developed an **automated scheduling system** to streamline volunteer coordination. 
+I initiated, led, designed and developed a volunteering project, pro-bono for an **automated scheduling system** to streamline volunteer coordination. 
 I've built a team of volunteers and was directly hands on code, contributing more than 50% of the code.
 We've built a web app, based on Angular, backed up by Firebase Store and Functions for a cloud based solution that is scalable, cheap, and fast. 
 
