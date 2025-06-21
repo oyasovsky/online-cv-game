@@ -10,13 +10,10 @@ export default function ParallaxBackground({ backgroundImage = null }) {
         y: (e.clientY / window.innerHeight) * 100,
       };
       setMousePosition(newPosition);
-      console.log('🖱️ Mouse moved:', newPosition);
     };
 
-    console.log('🎯 ParallaxBackground mounted, adding mouse listener');
     window.addEventListener('mousemove', handleMouseMove);
     return () => {
-      console.log('🎯 ParallaxBackground unmounting, removing mouse listener');
       window.removeEventListener('mousemove', handleMouseMove);
     };
   }, []);

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useRef } from 'react';
 import ChatBubble from '../components/ChatBubble';
 import ParallaxBackground from '../components/ParallaxBackground';
 import Head from 'next/head';
@@ -12,6 +12,7 @@ export default function Game() {
   const [sessionId, setSessionId] = useState(null);
   const [showSampleQuestions, setShowSampleQuestions] = useState(true);
   const [showFollowUpFooter, setShowFollowUpFooter] = useState(false);
+  const inputRef = useRef('');
   
   // Ensure component only renders on client side to prevent hydration errors
   useEffect(() => {
@@ -102,20 +103,20 @@ export default function Game() {
   }, [messages, askedQuestions, questions]);
 
   const sendMessage = async () => {
-    if (!input.trim() || isLoading) return;
+    const currentInput = inputRef.current;
+    if (!currentInput.trim() || isLoading) return;
     
     // Try to find a matching question ID
-    const match = questions.find(q => q.text === input.trim());
+    const match = questions.find(q => q.text === currentInput.trim());
     setAskedQuestions(prev => {
-      const newSet = new Set([...prev, match ? match.id : input.trim()]);
-      console.log('📝 Tracking custom question:', match ? match.id : input.trim());
-      console.log('📊 Total asked questions:', newSet.size);
+      const newSet = new Set([...prev, match ? match.id : currentInput.trim()]);
       return newSet;
     });
     
-    const userMessage = { fromUser: true, content: input };
+    const userMessage = { fromUser: true, content: currentInput };
     setMessages((prev) => [...prev, userMessage]);
     setInput('');
+    inputRef.current = '';
     setIsLoading(true);
 
     try {
@@ -124,18 +125,12 @@ export default function Game() {
         setTimeout(() => reject(new Error('Request timeout')), 45000) // 45 second timeout
       );
 
-      console.log('📤 Sending message with history length:', messages.length);
-      console.log('⏰ Request started at:', new Date().toISOString());
-      if (messages.length > 0) {
-        console.log('📤 Last 2 messages:', messages.slice(-2).map(msg => `${msg.fromUser ? 'User' : 'Assistant'}: ${msg.content.substring(0, 100)}...`));
-      }
-
       // Create the fetch promise
       const fetchPromise = fetch('/api/query', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ 
-          message: input, 
+          message: currentInput, 
           history: messages,
           sessionId: sessionId
         })
@@ -149,8 +144,6 @@ export default function Game() {
       }
       
       const data = await res.json();
-      
-      console.log('✅ Request completed successfully at:', new Date().toISOString());
       
       // Store session ID if returned from API
       if (data.sessionId && !sessionId) {
@@ -191,13 +184,18 @@ export default function Game() {
   const handleSampleQuestion = (questionId) => {
     setAskedQuestions(prev => {
       const newSet = new Set([...prev, questionId]);
-      console.log('📝 Tracking asked question:', questionId);
-      console.log('📊 Total asked questions:', newSet.size);
       return newSet;
     });
     // Find the question object by id
     const q = questions.find(q => q.id === questionId);
-    setInput(q ? q.text : questionId);
+    const questionText = q ? q.text : questionId;
+    setInput(questionText);
+    inputRef.current = questionText; // Update the ref as well
+    
+    // Automatically send the question after a small delay
+    setTimeout(() => {
+      sendMessage();
+    }, 100);
   };
 
   const startOver = () => {
@@ -420,7 +418,10 @@ export default function Game() {
                 <input
                   className="flex-1 cv-input"
                   value={input}
-                  onChange={(e) => setInput(e.target.value)}
+                  onChange={(e) => {
+                    setInput(e.target.value);
+                    inputRef.current = e.target.value;
+                  }}
                   placeholder="Ask me about my leadership, experience, or values..."
                   onKeyPress={(e) => e.key === 'Enter' && sendMessage()}
                   disabled={isLoading}
