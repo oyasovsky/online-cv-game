@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
 export default function ParallaxBackground({ backgroundImage = null }) {
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [imageLoaded, setImageLoaded] = useState(false);
 
   useEffect(() => {
@@ -11,19 +10,6 @@ export default function ParallaxBackground({ backgroundImage = null }) {
       img.onload = () => setImageLoaded(true);
       img.src = backgroundImage;
     }
-
-    const handleMouseMove = (e) => {
-      const newPosition = {
-        x: (e.clientX / window.innerWidth) * 100,
-        y: (e.clientY / window.innerHeight) * 100,
-      };
-      setMousePosition(newPosition);
-    };
-
-    window.addEventListener('mousemove', handleMouseMove);
-    return () => {
-      window.removeEventListener('mousemove', handleMouseMove);
-    };
   }, [backgroundImage]);
 
   return (
@@ -35,8 +21,7 @@ export default function ParallaxBackground({ backgroundImage = null }) {
             imageLoaded ? 'opacity-100' : 'opacity-0'
           }`}
           style={{
-            backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.7)), url(${backgroundImage})`,
-            transform: `translate(${mousePosition.x * 0.02}px, ${mousePosition.y * 0.02}px)`
+            backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.7)), url(${backgroundImage})`
           }}
         />
       )}
@@ -48,38 +33,6 @@ export default function ParallaxBackground({ backgroundImage = null }) {
         />
       )}
       
-      {/* Floating particles with parallax effect */}
-      <div 
-        className="floating-particle"
-        style={{
-          transform: `translate(${mousePosition.x * 0.08}px, ${mousePosition.y * 0.08}px)`
-        }}
-      />
-      <div 
-        className="floating-particle"
-        style={{
-          transform: `translate(${mousePosition.x * -0.12}px, ${mousePosition.y * -0.12}px)`
-        }}
-      />
-      <div 
-        className="floating-particle"
-        style={{
-          transform: `translate(${mousePosition.x * 0.15}px, ${mousePosition.y * 0.04}px)`
-        }}
-      />
-      <div 
-        className="floating-particle"
-        style={{
-          transform: `translate(${mousePosition.x * -0.08}px, ${mousePosition.y * 0.15}px)`
-        }}
-      />
-      <div 
-        className="floating-particle"
-        style={{
-          transform: `translate(${mousePosition.x * 0.04}px, ${mousePosition.y * -0.08}px)`
-        }}
-      />
-      
       {/* Subtle grid pattern for depth */}
       <div 
         className="absolute inset-0 opacity-3"
@@ -88,8 +41,7 @@ export default function ParallaxBackground({ backgroundImage = null }) {
             linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
             linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px)
           `,
-          backgroundSize: '100px 100px',
-          transform: `translate(${mousePosition.x * 0.01}px, ${mousePosition.y * 0.01}px)`
+          backgroundSize: '100px 100px'
         }}
       />
     </div>

@@ -218,225 +218,225 @@ export default function Game() {
         <meta name="description" content="Ask Olga Yasovsky anything about her leadership, experience, or values!" />
       </Head>
       <ParallaxBackground backgroundImage="/bg-o-left.jpg" />
-      <div className="min-h-screen flex flex-col p-6 relative z-10 w-full lg:w-1/2 lg:mx-auto">
-        {/* Minimalist Navigation - moved inside main container, above first glass-card */}
-        <div className="flex justify-between items-center mb-4 w-full">
-          <a 
-            href="/" 
-            className="text-white/60 hover:text-white/80 transition-colors text-sm"
-          >
-            ← Home
-          </a>
-          <a 
-            href="/Olga_Yasovsky_CV.pdf" 
-            target="_blank" 
-            rel="noopener noreferrer"
-            className="text-white/60 hover:text-white/80 transition-colors text-sm"
-          >
-            📄 View Classic CV
-          </a>
-        </div>
-        {/* Header */}
-        <div className="glass-card p-6 mb-6 text-center">
-          <h1 className="section-title">OlgaGPT - Interactive CV</h1>
-          <p className="body-text">Ask me anything about my leadership, experience, or values!</p>
-        </div>
-        
-        {/* Show loading state during SSR to prevent hydration errors */}
-        {!isClient ? (
-          <div className="glass-card p-6 mb-6">
-            <div className="flex items-center justify-center space-x-2 text-blue-300">
-              <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-blue-300"></div>
-              <span className="body-text">Loading...</span>
-            </div>
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="min-h-screen flex flex-col p-6 relative z-10 w-full lg:w-1/2 lg:mx-auto">
+          {/* Minimalist Navigation - moved inside main container, above first glass-card */}
+          <div className="flex justify-between items-center mb-4 w-full">
+            <a 
+              href="/" 
+              className="text-white/60 hover:text-white/80 transition-colors text-sm"
+            >
+              ← Home
+            </a>
+            <a 
+              href="/Olga_Yasovsky_CV.pdf" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="text-white/60 hover:text-white/80 transition-colors text-sm"
+            >
+              📄 View Classic CV
+            </a>
           </div>
-        ) : (
-          <>
-            {/* Sample Questions - Minimalist accordion style */}
-            {messages.length === 0 && (
-              <div className="follow-up-questions glass-card p-4 mb-6">
-                <button
-                  className="flex items-center justify-between w-full mb-2 text-base font-normal text-white/80 hover:text-white/90 focus:outline-none bg-transparent border-none px-0 py-0"
-                  onClick={() => setShowSampleQuestions((prev) => !prev)}
-                  aria-expanded={showSampleQuestions}
-                  aria-controls="sample-questions-accordion"
-                  style={{ boxShadow: 'none' }}
-                >
-                  <span className="tracking-tight">💡 Suggested questions</span>
-                  <span
-                    className={`transition-transform duration-200 ml-2 text-white/60 text-lg ${showSampleQuestions ? 'rotate-180' : 'rotate-0'}`}
-                    style={{ display: 'inline-block' }}
+          {/* Header */}
+          <div className="glass-card p-6 mb-6 text-center">
+            <h1 className="section-title">OlgaGPT - Interactive CV</h1>
+            <p className="body-text">Ask me anything about my leadership, experience, or values!</p>
+          </div>
+          
+          {/* Show loading state during SSR to prevent hydration errors */}
+          {!isClient ? (
+            <div className="glass-card p-6 mb-6">
+              <div className="flex items-center justify-center space-x-2 text-blue-300">
+                <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-blue-300"></div>
+                <span className="body-text">Loading...</span>
+              </div>
+            </div>
+          ) : (
+            <>
+              {/* Sample Questions - Minimalist accordion style */}
+              {messages.length === 0 && (
+                <div className="follow-up-questions glass-card p-4 mb-6">
+                  <button
+                    className="flex items-center justify-between w-full mb-2 text-base font-normal text-white/80 hover:text-white/90 focus:outline-none bg-transparent border-none px-0 py-0"
+                    onClick={() => setShowSampleQuestions((prev) => !prev)}
+                    aria-expanded={showSampleQuestions}
+                    aria-controls="sample-questions-accordion"
+                    style={{ boxShadow: 'none' }}
                   >
-                    {/* Modern chevron SVG icon */}
-                    <svg
-                      width="20"
-                      height="20"
-                      viewBox="0 0 20 20"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="inline-block align-middle"
+                    <span className="tracking-tight">💡 Suggested questions</span>
+                    <span
+                      className={`transition-transform duration-200 ml-2 text-white/60 text-lg ${showSampleQuestions ? 'rotate-180' : 'rotate-0'}`}
+                      style={{ display: 'inline-block' }}
                     >
-                      <path d="M6 8l4 4 4-4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                    </svg>
-                  </span>
-                </button>
-                {showSampleQuestions && (
-                  <div id="sample-questions-accordion" className="grid grid-cols-1 md:grid-cols-2 gap-2 mt-2">
-                    {(() => {
-                      // Ensure 'How did you build this site?' is always first and deduplicated, and only 6 questions are shown
-                      const initialQs = getContextualQuestions;
-                      const deduped = [alwaysShowQuestion, ...initialQs.filter(q => q.id !== alwaysShowQuestion.id)];
-                      return deduped.slice(0, 6).map((question, index) => {
+                      {/* Modern chevron SVG icon */}
+                      <svg
+                        width="20"
+                        height="20"
+                        viewBox="0 0 20 20"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="inline-block align-middle"
+                      >
+                        <path d="M6 8l4 4 4-4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                      </svg>
+                    </span>
+                  </button>
+                  {showSampleQuestions && (
+                    <div id="sample-questions-accordion" className="grid grid-cols-1 md:grid-cols-2 gap-2 mt-2">
+                      {(() => {
+                        // Ensure 'How did you build this site?' is always first and deduplicated, and only 6 questions are shown
+                        const initialQs = getContextualQuestions;
+                        const deduped = [alwaysShowQuestion, ...initialQs.filter(q => q.id !== alwaysShowQuestion.id)];
+                        return deduped.slice(0, 6).map((question, index) => {
+                          const isLeadership = questionCategories.leadership.includes(question.text);
+                          const isTechnical = questionCategories.technical.includes(question.text);
+                          return (
+                            <button
+                              key={index}
+                              onClick={() => handleSampleQuestion(question.id)}
+                              className={`text-left p-2 rounded-md transition-colors border border-transparent hover:border-white/10 text-sm bg-white/5 hover:bg-white/10 ${
+                                isLeadership 
+                                  ? 'text-blue-200' 
+                                  : 'text-green-200'
+                              }`}
+                              style={{ fontWeight: 400 }}
+                            >
+                              <div className="flex items-center space-x-2">
+                                <span className={`text-xs px-1 py-0.5 rounded ${
+                                  isLeadership 
+                                    ? 'bg-blue-500/10 text-blue-300' 
+                                    : 'bg-green-500/10 text-green-300'
+                                }`}>
+                                  {isLeadership ? '👥' : '⚙️'}
+                                </span>
+                                <span className="body-text text-sm font-normal">{question.text}</span>
+                              </div>
+                            </button>
+                          );
+                        });
+                      })()}
+                    </div>
+                  )}
+                </div>
+              )}
+              
+              {/* Chat messages container */}
+              {(messages.length > 0 || isLoading) && (
+                <div
+                  className={`chat-main flex-1 overflow-y-auto mb-6 glass-card p-6`}
+                  style={shouldShowFollowUp ? { borderBottomLeftRadius: 0, borderBottomRightRadius: 0 } : {}}
+                >
+                  {messages.map((m, idx) => (
+                    <ChatBubble 
+                      key={idx} 
+                      message={m.content} 
+                      fromUser={m.fromUser}
+                      sources={m.sources}
+                      confidence={m.confidence}
+                      timeline={m.timeline}
+                    />
+                  ))}
+                  {isLoading && (
+                    <div className="flex items-center space-x-2 text-blue-300">
+                      <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-blue-300"></div>
+                      <span className="body-text">OlgaGPT is thinking...</span>
+                    </div>
+                  )}
+                </div>
+              )}
+              
+              {/* Follow-up Questions - Show after each answer */}
+              {shouldShowFollowUp && (
+                <div
+                  className={`follow-up-questions glass-card mb-6 transition-all duration-300 overflow-hidden rounded-t-none ${showFollowUpFooter ? 'max-h-[500px] opacity-100' : 'max-h-12 opacity-80'}`}
+                  style={{ borderTopLeftRadius: 0, borderTopRightRadius: 0, marginTop: '-1.5rem' }}
+                >
+                  <button
+                    className="flex items-center justify-between w-full px-4 py-2 text-base font-normal text-white/80 hover:text-white/90 focus:outline-none bg-transparent border-none"
+                    onClick={() => setShowFollowUpFooter((prev) => !prev)}
+                    aria-expanded={showFollowUpFooter}
+                    aria-controls="follow-up-footer-accordion"
+                    style={{ boxShadow: 'none' }}
+                  >
+                    <span className="tracking-tight">💭 What would you like to know next?</span>
+                    <span
+                      className={`transition-transform duration-200 ml-2 text-white/60 text-lg ${showFollowUpFooter ? 'rotate-180' : 'rotate-0'}`}
+                      style={{ display: 'inline-block' }}
+                    >
+                      <svg
+                        width="20"
+                        height="20"
+                        viewBox="0 0 20 20"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="inline-block align-middle"
+                      >
+                        <path d="M6 8l4 4 4-4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                      </svg>
+                    </span>
+                  </button>
+                  {showFollowUpFooter && (
+                    <div id="follow-up-footer-accordion" className="p-4 pt-0 grid grid-cols-1 md:grid-cols-2 gap-2">
+                      {getContextualQuestions.slice(0, 6).map((question, index) => {
                         const isLeadership = questionCategories.leadership.includes(question.text);
                         const isTechnical = questionCategories.technical.includes(question.text);
                         return (
                           <button
                             key={index}
                             onClick={() => handleSampleQuestion(question.id)}
-                            className={`text-left p-2 rounded-md transition-colors border border-transparent hover:border-white/10 text-sm bg-white/5 hover:bg-white/10 ${
+                            className={`text-left p-2 rounded-md transition-all duration-200 border text-sm hover:scale-[1.02] ${
                               isLeadership 
-                                ? 'text-blue-200' 
-                                : 'text-green-200'
+                                ? 'bg-blue-500/10 hover:bg-blue-500/20 border-blue-500/20 hover:border-blue-500/40' 
+                                : 'bg-green-500/10 hover:bg-green-500/20 border-green-500/20 hover:border-green-500/40'
                             }`}
-                            style={{ fontWeight: 400 }}
                           >
                             <div className="flex items-center space-x-2">
                               <span className={`text-xs px-1 py-0.5 rounded ${
                                 isLeadership 
-                                  ? 'bg-blue-500/10 text-blue-300' 
-                                  : 'bg-green-500/10 text-green-300'
-                              }`}>
-                                {isLeadership ? '👥' : '⚙️'}
-                              </span>
-                              <span className="body-text text-sm font-normal">{question.text}</span>
+                                  ? 'bg-blue-500/20 text-blue-300' 
+                                  : 'bg-green-500/20 text-green-300'
+                              }`}>{isLeadership ? '👥' : '⚙️'}</span>
+                              <span className="body-text text-sm">{question.text}</span>
                             </div>
                           </button>
                         );
-                      });
-                    })()}
-                  </div>
-                )}
-              </div>
-            )}
-            
-            {/* Chat messages container */}
-            {(messages.length > 0 || isLoading) && (
-              <div
-                className={`chat-main flex-1 overflow-y-auto mb-6 glass-card p-6`}
-                style={shouldShowFollowUp ? { borderBottomLeftRadius: 0, borderBottomRightRadius: 0 } : {}}
-              >
-                {messages.map((m, idx) => (
-                  <ChatBubble 
-                    key={idx} 
-                    message={m.content} 
-                    fromUser={m.fromUser}
-                    sources={m.sources}
-                    confidence={m.confidence}
-                    timeline={m.timeline}
+                      })}
+                      {askedQuestions.size >= sampleQuestions.length && (
+                        <div className="mt-3 text-xs text-white/50 text-center col-span-2">
+                          ✨ You&apos;ve seen all the questions! Click <b>Start over</b> to begin again.
+                        </div>
+                      )}
+                    </div>
+                  )}
+                </div>
+              )}
+              
+              {/* Input container */}
+              <div className="glass-card p-6">
+                <div className="flex items-center space-x-4">
+                  <input
+                    className="flex-1 cv-input"
+                    value={input}
+                    onChange={(e) => {
+                      setInput(e.target.value);
+                      inputRef.current = e.target.value;
+                    }}
+                    placeholder="Ask me about my leadership, experience, or values..."
+                    onKeyPress={(e) => e.key === 'Enter' && sendMessage()}
+                    disabled={isLoading}
                   />
-                ))}
-                {isLoading && (
-                  <div className="flex items-center space-x-2 text-blue-300">
-                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-blue-300"></div>
-                    <span className="body-text">OlgaGPT is thinking...</span>
-                  </div>
-                )}
-              </div>
-            )}
-            
-            {/* Follow-up Questions - Show after each answer */}
-            {shouldShowFollowUp && (
-              <div
-                className={`follow-up-questions glass-card mb-6 transition-all duration-300 overflow-hidden rounded-t-none ${showFollowUpFooter ? 'max-h-[500px] opacity-100' : 'max-h-12 opacity-80'}`}
-                style={{ borderTopLeftRadius: 0, borderTopRightRadius: 0, marginTop: '-1.5rem' }}
-              >
-                <button
-                  className="flex items-center justify-between w-full px-4 py-2 text-base font-normal text-white/80 hover:text-white/90 focus:outline-none bg-transparent border-none"
-                  onClick={() => setShowFollowUpFooter((prev) => !prev)}
-                  aria-expanded={showFollowUpFooter}
-                  aria-controls="follow-up-footer-accordion"
-                  style={{ boxShadow: 'none' }}
-                >
-                  <span className="tracking-tight">💭 What would you like to know next?</span>
-                  <span
-                    className={`transition-transform duration-200 ml-2 text-white/60 text-lg ${showFollowUpFooter ? 'rotate-180' : 'rotate-0'}`}
-                    style={{ display: 'inline-block' }}
+                  <button
+                    className="cv-button disabled:opacity-50 disabled:cursor-not-allowed"
+                    onClick={sendMessage}
+                    disabled={isLoading || !input.trim()}
                   >
-                    <svg
-                      width="20"
-                      height="20"
-                      viewBox="0 0 20 20"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="inline-block align-middle"
-                    >
-                      <path d="M6 8l4 4 4-4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                    </svg>
-                  </span>
-                </button>
-                {showFollowUpFooter && (
-                  <div id="follow-up-footer-accordion" className="p-4 pt-0 grid grid-cols-1 md:grid-cols-2 gap-2">
-                    {getContextualQuestions.slice(0, 6).map((question, index) => {
-                      const isLeadership = questionCategories.leadership.includes(question.text);
-                      const isTechnical = questionCategories.technical.includes(question.text);
-                      return (
-                        <button
-                          key={index}
-                          onClick={() => handleSampleQuestion(question.id)}
-                          className={`text-left p-2 rounded-md transition-all duration-200 border text-sm hover:scale-[1.02] ${
-                            isLeadership 
-                              ? 'bg-blue-500/10 hover:bg-blue-500/20 border-blue-500/20 hover:border-blue-500/40' 
-                              : 'bg-green-500/10 hover:bg-green-500/20 border-green-500/20 hover:border-green-500/40'
-                          }`}
-                        >
-                          <div className="flex items-center space-x-2">
-                            <span className={`text-xs px-1 py-0.5 rounded ${
-                              isLeadership 
-                                ? 'bg-blue-500/20 text-blue-300' 
-                                : 'bg-green-500/20 text-green-300'
-                            }`}>
-                              {isLeadership ? '👥' : '⚙️'}
-                            </span>
-                            <span className="body-text text-sm">{question.text}</span>
-                          </div>
-                        </button>
-                      );
-                    })}
-                    {askedQuestions.size >= sampleQuestions.length && (
-                      <div className="mt-3 text-xs text-white/50 text-center col-span-2">
-                        ✨ You&apos;ve seen all the questions! Click <b>Start over</b> to begin again.
-                      </div>
-                    )}
-                  </div>
-                )}
+                    {isLoading ? 'Sending...' : 'Send'}
+                  </button>
+                </div>
               </div>
-            )}
-            
-            {/* Input container */}
-            <div className="glass-card p-6">
-              <div className="flex items-center space-x-4">
-                <input
-                  className="flex-1 cv-input"
-                  value={input}
-                  onChange={(e) => {
-                    setInput(e.target.value);
-                    inputRef.current = e.target.value;
-                  }}
-                  placeholder="Ask me about my leadership, experience, or values..."
-                  onKeyPress={(e) => e.key === 'Enter' && sendMessage()}
-                  disabled={isLoading}
-                />
-                <button
-                  className="cv-button disabled:opacity-50 disabled:cursor-not-allowed"
-                  onClick={sendMessage}
-                  disabled={isLoading || !input.trim()}
-                >
-                  {isLoading ? 'Sending...' : 'Send'}
-                </button>
-              </div>
-            </div>
-          </>
-        )}
+            </>
+          )}
+        </div>
       </div>
     </>
   );

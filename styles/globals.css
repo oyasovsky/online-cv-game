@@ -5,10 +5,7 @@
 /* Using the actual background image from olga-yasovsky.com */
 body {
   @apply text-white;
-  background: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.7)), 
-              url('/bg-o.jpg');
-  background-size: cover;
-  background-position: center;
+  background-color: #0c0a15; /* Dark fallback background */
   background-attachment: scroll; /* Default for mobile */
   background-repeat: no-repeat;
   min-height: 100vh;
@@ -39,6 +36,9 @@ body {
   height: 100%;
   pointer-events: none;
   z-index: -1;
+  transform: translateZ(0); /* Force GPU rendering layer */
+  will-change: transform;    /* Hint for rendering optimization */
+  backface-visibility: hidden; /* Prevent flickering */
 }
 
 .floating-particle {
