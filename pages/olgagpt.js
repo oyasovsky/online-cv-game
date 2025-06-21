@@ -217,7 +217,7 @@ export default function Game() {
         <title>OlgaGPT - Chat with Olga Yasovsky | Interactive CV</title>
         <meta name="description" content="Ask Olga Yasovsky anything about her leadership, experience, or values!" />
       </Head>
-      <ParallaxBackground backgroundImage="/bg-o-left.png" />
+      <ParallaxBackground backgroundImage="/bg-o-left.jpg" />
       <div className="min-h-screen flex flex-col p-6 relative z-10 w-full lg:w-1/2 lg:mx-auto">
         {/* Minimalist Navigation - moved inside main container, above first glass-card */}
         <div className="flex justify-between items-center mb-4 w-full">

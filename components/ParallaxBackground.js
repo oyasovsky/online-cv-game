@@ -2,8 +2,16 @@ import React, { useEffect, useState } from 'react';
 
 export default function ParallaxBackground({ backgroundImage = null }) {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const [imageLoaded, setImageLoaded] = useState(false);
 
   useEffect(() => {
+    // Preload the background image
+    if (backgroundImage) {
+      const img = new Image();
+      img.onload = () => setImageLoaded(true);
+      img.src = backgroundImage;
+    }
+
     const handleMouseMove = (e) => {
       const newPosition = {
         x: (e.clientX / window.innerWidth) * 100,
@@ -16,18 +24,27 @@ export default function ParallaxBackground({ backgroundImage = null }) {
     return () => {
       window.removeEventListener('mousemove', handleMouseMove);
     };
-  }, []);
+  }, [backgroundImage]);
 
   return (
     <div className="parallax-bg">
       {/* Background image if specified */}
       {backgroundImage && (
         <div 
-          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+          className={`absolute inset-0 bg-cover bg-center bg-no-repeat transition-opacity duration-1000 ${
+            imageLoaded ? 'opacity-100' : 'opacity-0'
+          }`}
           style={{
             backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.7)), url(${backgroundImage})`,
             transform: `translate(${mousePosition.x * 0.02}px, ${mousePosition.y * 0.02}px)`
           }}
+        />
+      )}
+      
+      {/* Loading fallback - gradient background */}
+      {!imageLoaded && backgroundImage && (
+        <div 
+          className="absolute inset-0 bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900"
         />
       )}
       
