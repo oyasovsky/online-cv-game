@@ -2,7 +2,8 @@
 
 This project is a  personal CV website with an interactive RAG (Retrieval-Augmented Generation) assistant powered by OpenAI and Firebase Vector Search.
 
-Visit it [Here https://online-cv-chat.web.app/](https://online-cv-chat.web.app/)
+Visit it [Here](https://online-cv-chat.web.app/) 
+
 ## 🚀 Features
 
 - **Interactive Chat Interface**: Ask OlgaGPT anything about her experience, leadership philosophy, and values
@@ -125,32 +126,6 @@ This data helps improve the knowledge base and response quality over time.
 
 OlgaGPT includes a comprehensive audit logging system that tracks all chat interactions for analytics and improvement purposes.
 
-### 🔍 What Gets Logged
-
-**Session Data:**
-- Session ID and metadata
-- User agent and IP address (anonymized)
-- Session duration and question count
-- Total tokens used
-
-**Question Data:**
-- Full question text and AI response
-- Confidence scores and response time
-- Sources used for each response
-- Follow-up relationships between questions
-- Token usage per question
-
-### 🛠️ Setting Up Audit Logging
-
-1. **Update Firestore Security Rules:**
-   ```bash
-   npm run setup-audit-rules
-   ```
-   Copy the generated rules to your Firebase Console Firestore Rules section.
-
-2. **Verify Audit Collection:**
-   The system automatically creates a `chat_audit_logs` collection in Firestore when the first question is asked.
-
 ### 📈 Analytics Dashboard
 
 Access the analytics dashboard at `/analytics` to view:
@@ -175,172 +150,14 @@ GET /api/analytics?startDate=2024-01-01&endDate=2024-01-31
 GET /api/analytics?sessionId=session_123456
 ```
 
-**Response Format:**
-```json
-{
-  "type": "overall",
-  "data": {
-    "totalSessions": 150,
-    "totalQuestions": 450,
-    "averageQuestionsPerSession": 3.0,
-    "averageResponseTime": 2500,
-    "averageConfidence": 75,
-    "totalTokens": 125000,
-    "mostCommonSources": [...],
-    "topQuestions": [...],
-    "sessionDuration": 8.5
-  }
-}
-```
-
-### 🎯 Use Cases
-
-**Content Improvement:**
-- Identify gaps in knowledge base coverage
-- Find most-asked questions to prioritize content
-- Track confidence scores to improve embeddings
-
-**Performance Optimization:**
-- Monitor response times and optimize bottlenecks
-- Track token usage for cost optimization
-- Identify slow queries for caching
-
-**User Experience:**
-- Understand user engagement patterns
-- Identify common conversation flows
-- Measure session quality and duration
-
-### 🔧 Customization
-
-**Add Custom Metadata:**
-```javascript
-// In your API endpoint
-const metadata = {
-  userAgent: req.headers['user-agent'],
-  ipAddress: req.headers['x-forwarded-for'],
-  referrer: req.headers.referer,
-  customField: 'customValue'
-};
-
-await auditLogger.createSession(sessionId, metadata);
-```
-
-**Custom Analytics:**
-```javascript
-// Get session-specific stats
-const sessionStats = await auditLogger.getSessionStats(sessionId);
-
-// Get filtered analytics
-const analytics = await auditLogger.getAnalytics({
-  startDate: new Date('2024-01-01'),
-  endDate: new Date('2024-01-31')
-});
-```
-
 ## 🚀 Deployment
 
 ### Firebase Vector Search Setup
 
 This project uses Firebase Vector Search for storing and querying embeddings. Here's how to set it up:
 
-#### 1. Create a Firebase Project
-1. Go to [Firebase Console](https://console.firebase.google.com/)
-2. Create a new project or select an existing one
-3. Enable Firestore Database
-4. Set up security rules for your collection
-
-#### 2. Get Firebase Credentials
-1. Go to Project Settings > Service Accounts
-2. Click "Generate new private key"
-3. Download the JSON file
-4. Add the credentials to your environment variables
-
-#### 3. Environment Variables
-Create a `.env.local` file with:
-
-```bash
-# OpenAI Configuration
-OPENAI_API_KEY=your_openai_api_key
-
-# Firebase Configuration (Client-side)
-NEXT_PUBLIC_FIREBASE_API_KEY=your_firebase_api_key
-NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=your_project.firebaseapp.com
-NEXT_PUBLIC_FIREBASE_PROJECT_ID=your_project_id
-NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET=your_project.appspot.com
-NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=123456789
-NEXT_PUBLIC_FIREBASE_APP_ID=your_app_id
-
-# Firebase Admin Configuration (Server-side)
-FIREBASE_PROJECT_ID=your_project_id
-FIREBASE_CLIENT_EMAIL=your_service_account_email
-FIREBASE_PRIVATE_KEY="-----BEGIN PRIVATE KEY-----\nYour private key here\n-----END PRIVATE KEY-----\n"
-```
-
-#### 4. Initialize Vector Search
-1. Run `npm run create-embeddings` to generate and store embeddings
-2. The script will create a collection called `olga_knowledge_base` in Firestore
-3. Each document contains the text content, metadata, and embedding vector
-
-#### 5. Firestore Security Rules
-Set up appropriate security rules for your collection:
-
-```javascript
-rules_version = '2';
-service cloud.firestore {
-  match /databases/{database}/documents {
-    match /olga_knowledge_base/{document} {
-      allow read: if true;  // Allow public read access
-      allow write: if false; // Only allow writes from your server
-    }
-  }
-}
-```
-
-### Vercel (Recommended)
-1. Connect your GitHub repository to Vercel
-2. Add environment variables in Vercel dashboard
-3. Deploy automatically on push to main branch
-
-### Other Platforms
-- Ensure Firebase Vector Search is properly configured
-- Set up environment variables
-- Run `npm run build` and `npm start`
-
-## 🤝 Contributing
-
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Test thoroughly
-5. Submit a pull request
 
 ## 📝 License
 
 This project is for personal use. Please respect the personal nature of the content.
 
-## 🆘 Troubleshooting
-
-### Common Issues
-
-**"Firebase connection failed"**
-- Ensure Firebase project is properly configured
-- Check environment variables are set correctly
-- Verify service account credentials
-- Ensure Firestore is enabled in your Firebase project
-
-**"OpenAI API rate limit exceeded"**
-- Reduce batch size in embedding script
-- Add longer delays between requests
-- Check your OpenAI usage limits
-
-**"No relevant documents found"**
-- Run `npm run create-embeddings` again
-- Check that markdown files exist in `/data/olga_docs/`
-- Verify API key is correct
-- Ensure Firebase collection contains documents
-
-### Getting Help
-- Check the console logs for detailed error messages
-- Ensure all dependencies are installed correctly
-- Verify environment variables are set properly
-- Run `npm run setup-firebase` to test Firebase connection
