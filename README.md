@@ -1,7 +1,8 @@
 # OlgaGPT - Interactive CV with RAG Assistant
 
-This project is a futuristic personal CV website with an interactive RAG (Retrieval-Augmented Generation) assistant powered by OpenAI and Firebase Vector Search.
+This project is a  personal CV website with an interactive RAG (Retrieval-Augmented Generation) assistant powered by OpenAI and Firebase Vector Search.
 
+Visit it [Here https://online-cv-chat.web.app/](https://online-cv-chat.web.app/)
 ## 🚀 Features
 
 - **Interactive Chat Interface**: Ask OlgaGPT anything about her experience, leadership philosophy, and values
