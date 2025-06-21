@@ -28,6 +28,7 @@ export default function Game() {
   // Unified questions array with category
   const questions = [
     { id: 'how-did-you-build-this-site', text: "How did you build this site?", category: "technical" },
+    { id: 'tell-me-about-career-path', text: "Tell me about your career path", category: "leadership" },
     { id: 'what-are-your-signature-traits', text: "What are your signature traits?", category: "leadership" },
     { id: 'tell-me-about-volunteering', text: "What's your relation to SpaceIL?", category: "technical" },
     { id: 'what-makes-your-leadership-style-different', text: "What makes your leadership style different?", category: "leadership" },
@@ -161,7 +162,8 @@ export default function Game() {
           fromUser: false, 
           content: data.reply,
           sources: data.sources,
-          confidence: data.confidence
+          confidence: data.confidence,
+          timeline: data.timeline
         }]);
       } else {
         throw new Error('No reply received');
@@ -332,6 +334,7 @@ export default function Game() {
                     fromUser={m.fromUser}
                     sources={m.sources}
                     confidence={m.confidence}
+                    timeline={m.timeline}
                   />
                 ))}
                 {isLoading && (

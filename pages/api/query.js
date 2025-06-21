@@ -3,6 +3,70 @@ import { adminDb } from '../../lib/firebase-admin';
 import { getOpenAIKey } from '../../lib/env-helper';
 const auditLogger = require('../../lib/firebase-audit');
 
+// Timeline data for career path questions
+const timelineData = [
+  {
+    "id": 1,
+    "year": "2024–Present",
+    "title": "R&D Group Manager – GenAI SDLC Tools",
+    "company": "AT&T Israel",
+    "description": "Spearheading AT&T Israel’s GenAI initiative to build internal productivity tools that accelerate the Software Development Lifecycle (SDLC).",
+    "impact": "Launched GenAI-powered solutions like JumpStart and AskDev, improving developer productivity through code generation, repo insights, and automated support ticket analysis. Enabled collaboration between AI models and developers through custom LLM pipelines, RAG architecture, and graph-driven knowledge engines.",
+    "lessons": "The future of software development is automated—but human-centered. Leading this frontier requires technical depth, vision, and relentless iteration.",
+    "category": "innovation"
+  },
+  {
+    "id": 2,
+    "year": "2021–2024",
+    "title": "R&D Group Manager – AT&T Field Operations",
+    "company": "AT&T",
+    "description": "Led multiple Scrum teams responsible for developing AT&T’s mission-critical dispatching and technician management systems.",
+    "impact": "Modernized the legacy tech stack, improved system resilience and scale, and enabled real-time technician dispatch for millions of users. Introduced Agile/SAFe practices across 5–7 teams, significantly improving delivery predictability and operational efficiency.",
+    "lessons": "Managing complex enterprise-scale field systems taught me how to lead across reliability, performance, and user impact—at massive scale.",
+    "category": "leadership"
+  },
+  {
+    "id": 3,
+    "year": "2016–2020",
+    "title": "Software Team Lead",
+    "company": "AT&T",
+    "description": "Led 2–3 Scrum teams (~6 people each), set roadmaps, managed technical planning, and enforced best practices across testing and CI/CD.",
+    "impact": "Built robust dev pipelines, streamlined delivery, and mentored engineers through complex architecture upgrades.",
+    "lessons": "Leadership is about clarity, structure, and empowering others. When your team has autonomy and trust, results follow.",
+    "category": "leadership"
+  },
+  {
+    "id": 4,
+    "year": "2011–2016",
+    "title": "Senior FullStack Developer",
+    "company": "AT&T",
+    "description": "Developed and maintained full-stack solutions for IoT platforms and 4G network management systems.",
+    "impact": "Delivered customer-facing dashboards, billing systems, and management tools using Angular, Node.js, and Java. Participated in international demos (CES, etc.).",
+    "lessons": "Being a bridge between frontend polish and backend power shaped my product intuition and technical versatility.",
+    "category": "technical"
+  },
+  {
+    "id": 5,
+    "year": "2008–2012",
+    "title": "Java/J2EE Developer",
+    "company": "Amdocs",
+    "description": "Built enterprise web applications using Java, web services, and Hibernate for global telecom clients.",
+    "impact": "Improved code maintainability and performance in large-scale deployments. Contributed to best-practice guidelines.",
+    "lessons": "Discipline, modularity, and documentation were core to enterprise dev culture—and became core to me.",
+    "category": "technical"
+  },
+  {
+    "id": 6,
+    "year": "2004–2005",
+    "title": "Technical Support Engineer",
+    "company": "eTeacher Ltd.",
+    "description": "Supported a live desktop-sharing classroom platform with international users.",
+    "impact": "Resolved high-pressure issues in real time, enhancing customer satisfaction and feeding product improvements.",
+    "lessons": "Support builds your empathy muscles. It’s where user pain turns into product insight.",
+    "category": "support"
+  }
+];
+
 // Initialize clients
 const openai = new OpenAI({
   apiKey: getOpenAIKey(),
@@ -84,7 +148,7 @@ export default async function handler(req, res) {
 
     console.log('🔍 Processing query:', message);
 
-    // Generate or get session ID for audit logging
+    // Generate or get session ID for audit logging (moved to beginning)
     let currentSessionId = sessionId;
     if (!currentSessionId) {
       currentSessionId = `session_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
@@ -103,6 +167,32 @@ export default async function handler(req, res) {
         console.warn('⚠️ Failed to create audit session:', error);
         // Continue without audit logging if it fails
       }
+    }
+
+    // Check if this is a career path/timeline question
+    const careerKeywords = [
+      'career path', 'career progression', 'career journey', 'career timeline',
+      'work history', 'job history', 'professional background', 'career background',
+      'career development', 'career growth', 'career advancement', 'career trajectory',
+      'work experience', 'professional experience', 'career progression',
+      'how did you get here', 'what was your path', 'career story',
+      'timeline', 'progression', 'journey', 'path', 'background'
+    ];
+    
+    const isCareerQuestion = careerKeywords.some(keyword => 
+      message.toLowerCase().includes(keyword.toLowerCase())
+    );
+
+    if (isCareerQuestion) {
+      const timelineResponse = `My career has been a dynamic journey of growth—from hands-on software development to leading innovation at scale. Each step has deepened my expertise and expanded my impact. Here’s a look at the path that shaped me.`;
+
+      return res.status(200).json({
+        reply: timelineResponse,
+        timeline: timelineData,
+        confidence: 95,
+        sources: ['career_timeline'],
+        sessionId: currentSessionId
+      });
     }
 
     const startTime = Date.now();
