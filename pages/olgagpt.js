@@ -13,7 +13,7 @@ export default function Game() {
   const [showSampleQuestions, setShowSampleQuestions] = useState(true);
   const [showFollowUpFooter, setShowFollowUpFooter] = useState(false);
   const inputRef = useRef('');
-  
+
   // Ensure component only renders on client side to prevent hydration errors
   useEffect(() => {
     setIsClient(true);

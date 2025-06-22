@@ -7,7 +7,7 @@ import Head from 'next/head';
 export default function Home() {
   return (
     <>
-      <ParallaxBackground />
+      <ParallaxBackground backgroundImage="/bg-o.jpg"/>
       <div className="min-h-screen flex flex-col items-center justify-center text-center relative z-10 px-2 sm:px-4 w-full lg:w-1/2 lg:mx-auto">
         <Head>
           <title>Olga Yasovsky - R&D Leader & Technology Executive | Interactive CV</title>
