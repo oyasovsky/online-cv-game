@@ -432,7 +432,7 @@ export default function Game() {
               )}
               
               {/* Input container */}
-              <div className="glass-card p-6">
+              <div className="glass-input-container p-6">
                 <div className="flex items-center space-x-4">
                   <input
                     className="flex-1 cv-input"
