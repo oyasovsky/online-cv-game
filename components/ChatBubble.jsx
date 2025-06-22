@@ -3,8 +3,8 @@ import React, { useState } from 'react';
 export default function ChatBubble({ message, fromUser, sources, confidence, timeline }) {
   const alignment = fromUser ? 'items-end text-right' : 'items-start text-left';
   const bubbleStyle = fromUser 
-    ? 'bg-gradient-to-r from-white/20 to-white/15 border-white/30' 
-    : 'bg-white/10 border-white/20';
+    ? 'border-slate-400/30' /* User messages: Custom RGB background */
+    : 'border-slate-500/30'; /* Assistant messages: Custom RGB background */
   
   const [selectedTimelineEntry, setSelectedTimelineEntry] = useState(null);
 
@@ -105,11 +105,21 @@ export default function ChatBubble({ message, fromUser, sources, confidence, tim
   
   return (
     <div className={`flex flex-col ${alignment} my-4`}>
-      <div className={`p-4 rounded-lg ${bubbleStyle} max-w-md border`}>
+      <div 
+        className={`p-4 rounded-lg ${bubbleStyle} max-w-md border`}
+        style={fromUser ? { backgroundColor: 'rgb(37 44 37 / 60%)' } : { backgroundColor: 'rgb(79 87 79 / 60%)' }}
+      >
         <div 
           className="body-text"
           dangerouslySetInnerHTML={{ __html: formatMessage(message) }}
         />
+        
+        {/* Render timeline outside of chat bubble for full width */}
+        {!fromUser && timeline && (
+          <div className="w-full mt-4">
+            {renderTimeline()}
+          </div>
+        )}
         
         {/* Show sources for AI responses */}
         {!fromUser && sources && sources.length > 0 && (
@@ -117,21 +127,14 @@ export default function ChatBubble({ message, fromUser, sources, confidence, tim
             <div className="text-xs text-blue-300 mb-2">
               📚 Sources: {sources.map(s => s.replace('.md', '')).join(', ')}
             </div>
-            {confidence && confidence.length > 0 && (
-              <div className="text-xs text-green-300">
-                🎯 Confidence: {Math.max(...confidence)}%
+            {confidence && (
+              <div className="text-xs text-blue-300">
+                🎯 Confidence: {Array.isArray(confidence) ? Math.max(...confidence) : confidence}%
               </div>
             )}
           </div>
         )}
       </div>
-      
-      {/* Render timeline outside of chat bubble for full width */}
-      {!fromUser && timeline && (
-        <div className="w-full mt-4">
-          {renderTimeline()}
-        </div>
-      )}
     </div>
   );
 }

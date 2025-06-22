@@ -113,9 +113,10 @@ body {
 
 /* Glass morphism effect matching olga-yasovsky.com style */
 .glass-card {
-  background: rgba(255, 255, 255, 0.1);
-  /* backdrop-filter: blur(20px); */ /* Temporarily disabled for debugging */
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  /* New Style: Dark, semi-opaque background for better contrast */
+  background: rgb(43 46 42 / 75%); /* User-specified color */
+  /* backdrop-filter: blur(20px); */ /* Kept disabled to avoid rendering bugs */
+  border: 1px solid rgba(255, 255, 255, 0.1); /* Softened the border */
   border-radius: 20px;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
 }
