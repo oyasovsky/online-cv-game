@@ -105,7 +105,7 @@ export default function ChatBubble({ message, fromUser, sources, confidence, tim
   
   return (
     <div className={`flex flex-col ${alignment} my-4`}>
-      <div className={`p-4 rounded-lg ${bubbleStyle} max-w-md backdrop-blur-sm border`}>
+      <div className={`p-4 rounded-lg ${bubbleStyle} max-w-md border`}>
         <div 
           className="body-text"
           dangerouslySetInnerHTML={{ __html: formatMessage(message) }}

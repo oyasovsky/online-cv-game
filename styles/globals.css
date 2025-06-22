@@ -114,7 +114,7 @@ body {
 /* Glass morphism effect matching olga-yasovsky.com style */
 .glass-card {
   background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(20px);
+  /* backdrop-filter: blur(20px); */ /* Temporarily disabled for debugging */
   border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: 20px;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
@@ -246,6 +246,14 @@ html {
 /* Custom scrollbar */
 ::-webkit-scrollbar {
   width: 10px;
+}
+
+@layer utilities {
+  /* Forces an element onto its own GPU layer to prevent rendering glitches */
+  .force-gpu-layer {
+    transform: translateZ(0);
+    backface-visibility: hidden;
+  }
 }
 
 ::-webkit-scrollbar-track {
