@@ -13,6 +13,7 @@ export default function Game() {
   const [showSampleQuestions, setShowSampleQuestions] = useState(true);
   const [showFollowUpFooter, setShowFollowUpFooter] = useState(false);
   const inputRef = useRef('');
+  const chatContainerRef = useRef(null);
 
   // Ensure component only renders on client side to prevent hydration errors
   useEffect(() => {
@@ -25,6 +26,24 @@ export default function Game() {
       setShowSampleQuestions(false);
     }
   }, [messages.length]);
+
+  // Force layout update and scroll to bottom on new message
+  useEffect(() => {
+    if (chatContainerRef.current) {
+      const chatContainer = chatContainerRef.current;
+
+      // Force a browser reflow. This can fix rendering glitches.
+      void chatContainer.offsetHeight;
+
+      // Schedule a scroll to the bottom on the next animation frame.
+      requestAnimationFrame(() => {
+        chatContainer.scrollTo({
+          top: chatContainer.scrollHeight,
+          behavior: 'smooth'
+        });
+      });
+    }
+  }, [messages]);
 
   // Unified questions array with category
   const questions = [
@@ -323,6 +342,7 @@ export default function Game() {
               {/* Chat messages container */}
               {(messages.length > 0 || isLoading) && (
                 <div
+                  ref={chatContainerRef}
                   className={`chat-main flex-1 overflow-y-auto mb-6 glass-card p-6`}
                   style={shouldShowFollowUp ? { borderBottomLeftRadius: 0, borderBottomRightRadius: 0 } : {}}
                 >
