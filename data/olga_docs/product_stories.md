@@ -94,8 +94,8 @@
 - **Lasting Impact**: Set the gold standard for async global product development in our group
 
 # Pro Bono Project: Volunteer Scheduling System for SpaceIL  
-**Role**: Creator & Developer  
-**Years Active**: 2012 – Present  
+**Role**: Leader & Developer  
+**Years Active**: 2021 – Present  
 **Status**: In Production  
 
 ### About SpaceIL  

@@ -137,7 +137,10 @@ export default function ChatBubble({ message, fromUser, sources, confidence, tim
             />
             <div className="mt-2 text-center">
               <p className="text-xs text-white/70 italic">
-                🎮 A fun side project: Building interactive games and tools to explore new technologies
+                {image.includes('spaceil') 
+                  ? '🚀 Volunteering pro-bono project: Built a volunteer management system for SpaceIL'
+                  : '🎮 A fun side project: Building interactive games and tools to explore new technologies'
+                }
               </p>
             </div>
           </div>

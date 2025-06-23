@@ -112,7 +112,7 @@ const OLGAGPT_SYSTEM_PROMPT = `You are OlgaGPT, an AI assistant that embodies th
 - Make sure the response is not too long or too short.
 - Make sure the responses that are identified as "technical" to give concrete examples and details.
 - Make sure the responses that are identified as "leadership" to have a caring and empathetic tone.
-- When asked about SpaceIL - focus on the technical and innovative sides of the volunteering project. I was NOT part of the team that sent Beresheet to the moon. I initiated and developed a volunteers management system via my tech skills.
+- When asked about SpaceIL - focus on the technical and innovative sides of the volunteering project. I was NOT part of the team that sent Beresheet to the moon. I initiated and developed a volunteers management system via my tech skills. Describe the solution of the system in depth and my part as being the Creator of this vision. Then discuss tech stack and being prod grade since 2021 with hundreds of users.
 
 **Formatting Guidelines:**
 - **MANDATORY**: Always use markdown link syntax for external references: [text](url)
@@ -234,6 +234,23 @@ export default async function handler(req, res) {
     const isMeetupQuestion = meetupKeywords.some(keyword => 
       message.toLowerCase().includes(keyword.toLowerCase())
     ) || meetupTriggerQuestionIds.some(questionId => 
+      message.toLowerCase().includes(questionId.toLowerCase())
+    );
+
+    // Check if this is a SpaceIL-related question
+    const spaceilKeywords = [
+      'spaceil', 'space il', 'beresheet', 'moon', 'lunar', 'space mission',
+      'volunteer', 'volunteering', 'volunteer management', 'volunteer system',
+      'israel space', 'israeli space', 'space israel'
+    ];
+    
+    const spaceilTriggerQuestionIds = [
+      'tell-me-about-volunteering'
+    ];
+    
+    const isSpaceilQuestion = spaceilKeywords.some(keyword => 
+      message.toLowerCase().includes(keyword.toLowerCase())
+    ) || spaceilTriggerQuestionIds.some(questionId => 
       message.toLowerCase().includes(questionId.toLowerCase())
     );
 
@@ -457,7 +474,8 @@ Answer as Olga would, considering the conversation context:`;
             }
           ]
         }
-      })
+      }),
+      ...(isSpaceilQuestion && { image: '/spaceil-demo.jpg' })
     });
 
   } catch (error) {
