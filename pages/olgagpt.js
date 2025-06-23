@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useMemo, useRef } from 'react';
+import Link from 'next/link';
 import ChatBubble from '../components/ChatBubble';
 import ParallaxBackground from '../components/ParallaxBackground';
 import Head from 'next/head';
@@ -49,8 +50,9 @@ export default function Game() {
   const questions = [
     { id: 'how-did-you-build-this-site', text: "How did you build this site?", category: "technical" },
     { id: 'tell-me-about-career-path', text: "Tell me about your career path", category: "leadership" },
-    { id: 'what-are-your-signature-traits', text: "What are your signature traits?", category: "leadership" },
+    { id: 'do-you-speak-at-meetups-and-conventions', text: "Do you speak at meetups and conventions?", category: "leadership" },
     { id: 'tell-me-about-volunteering', text: "What's your relation to SpaceIL?", category: "technical" },
+    { id: 'what-are-your-signature-traits', text: "What are your signature traits?", category: "leadership" },
     { id: 'what-makes-your-leadership-style-different', text: "What makes your leadership style different?", category: "leadership" },
     { id: 'how-do-you-drive-innovation-when-everythings-on-fire', text: "How do you drive innovation?", category: "leadership" },
     { id: 'whats-your-favorite-failure-and-why', text: "What's your favorite failure — and why?", category: "leadership" },
@@ -70,7 +72,7 @@ export default function Game() {
     { id: 'how-do-you-handle-technical-debt', text: "How do you handle technical debt?", category: "technical" },
     { id: 'how-do-you-balance-speed-with-quality', text: "How do you balance speed with quality?", category: "technical" },
     { id: 'tell-me-more-about-your-management-philosophy', text: "Tell me more about your management philosophy", category: "leadership" },
-    { id: 'whats-your-biggest-professional-achievement', text: "What's your biggest professional achievement?", category: "leadership" }
+    { id: 'whats-your-biggest-professional-achievement', text: "What's your biggest professional achievement?", category: "leadership" }    
   ];
 
   // Always show this question first
@@ -175,7 +177,9 @@ export default function Game() {
           content: data.reply,
           sources: data.sources,
           confidence: data.confidence,
-          timeline: data.timeline
+          timeline: data.timeline,
+          image: data.image,
+          carousel: data.carousel
         }]);
       } else {
         throw new Error('No reply received');
@@ -241,12 +245,12 @@ export default function Game() {
         <div className="min-h-screen flex flex-col p-6 relative z-10 w-full lg:w-1/2 lg:mx-auto">
           {/* Minimalist Navigation - moved inside main container, above first glass-card */}
           <div className="flex justify-between items-center mb-4 w-full">
-            <a 
+            <Link 
               href="/" 
               className="text-white/60 hover:text-white/80 transition-colors text-sm"
             >
               ← Home
-            </a>
+            </Link>
             <a 
               href="/Olga_Yasovsky_CV.pdf" 
               target="_blank" 
@@ -354,6 +358,8 @@ export default function Game() {
                       sources={m.sources}
                       confidence={m.confidence}
                       timeline={m.timeline}
+                      image={m.image}
+                      carousel={m.carousel}
                     />
                   ))}
                   {isLoading && (

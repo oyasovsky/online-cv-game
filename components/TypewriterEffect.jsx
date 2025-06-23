@@ -1,12 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 
 export default function TypewriterEffect() {
-  const phrases = [
+  const phrases = useMemo(() => [
     "I lead R&D teams that turn strategy into scalable solutions.",
     "I build products by building people first.",
     "I drive innovation with clarity, empathy, and technical depth.",
     "I turn complex ideas into products users love."
-  ];
+  ], []);
 
   const [currentPhraseIndex, setCurrentPhraseIndex] = useState(0);
   const [currentText, setCurrentText] = useState('');

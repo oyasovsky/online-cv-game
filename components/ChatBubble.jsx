@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
+import Image from 'next/image';
 
-export default function ChatBubble({ message, fromUser, sources, confidence, timeline }) {
+export default function ChatBubble({ message, fromUser, sources, confidence, timeline, image, carousel }) {
   const alignment = fromUser ? 'items-end text-right' : 'items-start text-left';
   const bubbleStyle = fromUser 
     ? 'border-slate-400/30' /* User messages: Custom RGB background */
     : 'border-slate-500/30'; /* Assistant messages: Custom RGB background */
   
   const [selectedTimelineEntry, setSelectedTimelineEntry] = useState(null);
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
   // Function to format message with markdown-like formatting
   const formatMessage = (text) => {
@@ -102,17 +104,107 @@ export default function ChatBubble({ message, fromUser, sources, confidence, tim
       </div>
     );
   };
+
+  const nextImage = () => {
+    setCurrentImageIndex((prev) => (prev + 1) % carousel.images.length);
+  };
+
+  const prevImage = () => {
+    setCurrentImageIndex((prev) => (prev - 1 + carousel.images.length) % carousel.images.length);
+  };
   
   return (
     <div className={`flex flex-col ${alignment} my-4`}>
       <div 
         className={`p-4 rounded-lg ${bubbleStyle} max-w-md border`}
-        style={fromUser ? { backgroundColor: 'rgb(37 44 37 / 60%)' } : { backgroundColor: 'rgb(79 87 79 / 60%)' }}
+        style={fromUser ? { backgroundColor: 'rgb(37 44 37 / 60%)' } : { backgroundColor: 'rgb(157 157 157 / 20%)' }}
       >
         <div 
           className="body-text"
           dangerouslySetInnerHTML={{ __html: formatMessage(message) }}
         />
+        
+        {/* Display single image if provided */}
+        {!fromUser && image && !carousel && (
+          <div className="mt-4">
+            <Image 
+              src={image} 
+              alt="Innovation and coding project" 
+              width={400}
+              height={300}
+              className="w-full h-auto rounded-lg shadow-lg"
+              style={{ maxHeight: '300px', objectFit: 'cover' }}
+            />
+            <div className="mt-2 text-center">
+              <p className="text-xs text-white/70 italic">
+                🎮 A fun side project: Building interactive games and tools to explore new technologies
+              </p>
+            </div>
+          </div>
+        )}
+
+        {/* Display carousel if provided */}
+        {!fromUser && carousel && (
+          <div className="mt-4">
+            <div className="relative">
+              <Image 
+                src={carousel.images[currentImageIndex].src} 
+                alt="Speaking engagement" 
+                width={400}
+                height={300}
+                className="w-full h-auto rounded-lg shadow-lg"
+                style={{ maxHeight: '300px', objectFit: 'cover' }}
+              />
+              
+              {/* Navigation arrows */}
+              {carousel.images.length > 1 && (
+                <>
+                  <button
+                    onClick={prevImage}
+                    className="absolute left-2 top-1/2 transform -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white rounded-full p-2 transition-colors"
+                    aria-label="Previous image"
+                  >
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                      <path d="M15 18l-6-6 6-6"/>
+                    </svg>
+                  </button>
+                  <button
+                    onClick={nextImage}
+                    className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white rounded-full p-2 transition-colors"
+                    aria-label="Next image"
+                  >
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                      <path d="M9 18l6-6-6-6"/>
+                    </svg>
+                  </button>
+                </>
+              )}
+              
+              {/* Image indicators */}
+              {carousel.images.length > 1 && (
+                <div className="absolute bottom-2 left-1/2 transform -translate-x-1/2 flex space-x-1">
+                  {carousel.images.map((_, index) => (
+                    <button
+                      key={index}
+                      onClick={() => setCurrentImageIndex(index)}
+                      className={`w-2 h-2 rounded-full transition-colors ${
+                        index === currentImageIndex ? 'bg-white' : 'bg-white/50'
+                      }`}
+                      aria-label={`Go to image ${index + 1}`}
+                    />
+                  ))}
+                </div>
+              )}
+            </div>
+            
+            {/* Subtitle for current image */}
+            <div className="mt-2 text-center">
+              <p className="text-xs text-white/70 italic">
+                {carousel.images[currentImageIndex].subtitle}
+              </p>
+            </div>
+          </div>
+        )}
         
         {/* Render timeline outside of chat bubble for full width */}
         {!fromUser && timeline && (

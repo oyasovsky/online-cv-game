@@ -1,17 +1,23 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import ParallaxBackground from '../components/ParallaxBackground';
 
 export default function Analytics() {
-  const [analytics, setAnalytics] = useState(null);
+  const [analytics, setAnalytics] = useState({
+    totalSessions: 0,
+    totalQuestions: 0,
+    averageQuestionsPerSession: 0,
+    sessionDuration: 0,
+    averageResponseTime: 0,
+    averageConfidence: 0,
+    totalTokens: 0,
+    mostCommonSources: [],
+    topQuestions: []
+  });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [dateRange, setDateRange] = useState('7d'); // 7d, 30d, 90d, all
 
-  useEffect(() => {
-    fetchAnalytics();
-  }, [dateRange]);
-
-  const fetchAnalytics = async () => {
+  const fetchAnalytics = useCallback(async () => {
     setLoading(true);
     setError(null);
 
@@ -57,7 +63,11 @@ export default function Analytics() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [dateRange]);
+
+  useEffect(() => {
+    fetchAnalytics();
+  }, [fetchAnalytics]);
 
   const formatNumber = (num) => {
     return new Intl.NumberFormat().format(Math.round(num));

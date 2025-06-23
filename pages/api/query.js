@@ -10,7 +10,7 @@ const timelineData = [
     "year": "2024–Present",
     "title": "R&D Group Manager – GenAI SDLC Tools",
     "company": "AT&T Israel",
-    "description": "Spearheading AT&T Israel’s GenAI initiative to build internal productivity tools that accelerate the Software Development Lifecycle (SDLC).",
+    "description": "Spearheading AT&T Israel's GenAI initiative to build internal productivity tools that accelerate the Software Development Lifecycle (SDLC).",
     "impact": "Launched GenAI-powered solutions like JumpStart and AskDev, improving developer productivity through code generation, repo insights, and automated support ticket analysis. Enabled collaboration between AI models and developers through custom LLM pipelines, RAG architecture, and graph-driven knowledge engines.",
     "lessons": "The future of software development is automated—but human-centered. Leading this frontier requires technical depth, vision, and relentless iteration.",
     "category": "innovation"
@@ -20,7 +20,7 @@ const timelineData = [
     "year": "2021–2024",
     "title": "R&D Group Manager – AT&T Field Operations",
     "company": "AT&T",
-    "description": "Led multiple Scrum teams responsible for developing AT&T’s mission-critical dispatching and technician management systems.",
+    "description": "Led multiple Scrum teams responsible for developing AT&T's mission-critical dispatching and technician management systems.",
     "impact": "Modernized the legacy tech stack, improved system resilience and scale, and enabled real-time technician dispatch for millions of users. Introduced Agile/SAFe practices across 5–7 teams, significantly improving delivery predictability and operational efficiency.",
     "lessons": "Managing complex enterprise-scale field systems taught me how to lead across reliability, performance, and user impact—at massive scale.",
     "category": "leadership"
@@ -62,7 +62,7 @@ const timelineData = [
     "company": "eTeacher Ltd.",
     "description": "Supported a live desktop-sharing classroom platform with international users.",
     "impact": "Resolved high-pressure issues in real time, enhancing customer satisfaction and feeding product improvements.",
-    "lessons": "Support builds your empathy muscles. It’s where user pain turns into product insight.",
+    "lessons": "Support builds your empathy muscles. It's where user pain turns into product insight.",
     "category": "support"
   }
 ];
@@ -184,7 +184,7 @@ export default async function handler(req, res) {
     );
 
     if (isCareerQuestion) {
-      const timelineResponse = `My career has been a dynamic journey of growth—from hands-on software development to leading innovation at scale. Each step has deepened my expertise and expanded my impact. Here’s a look at the path that shaped me.`;
+      const timelineResponse = `My career has been a dynamic journey of growth—from hands-on software development to leading innovation at scale. Each step has deepened my expertise and expanded my impact. Here's a look at the path that shaped me.`;
 
       return res.status(200).json({
         reply: timelineResponse,
@@ -194,6 +194,48 @@ export default async function handler(req, res) {
         sessionId: currentSessionId
       });
     }
+
+    // Check if this is an innovation-related question
+    const innovationKeywords = [
+      'innovation', 'innovative', 'innovate', 'experiment', 'experimentation', 
+      // Hands-on technology and up-to-date skills
+      'hands-on', 'hands on', 'coding', 'programming', 'development',
+      'up to date', 'up-to-date', 'current technology', 'latest technology',
+      'modern tech', 'modern technology', 'technical skills', 'coding skills',
+      'side project', 'side projects', 'personal project', 'personal projects',
+      'build', 'building', 'create', 'creating', 'develop', 'developing'
+    ];
+    
+    // Specific question IDs that should trigger the image
+    const innovationTriggerQuestionIds = [
+      'how-do-you-stay-current-with-technology',
+      'how-do-you-stay-technical-without-becoming-the-bottleneck',
+      'how-do-you-balance-innovation-with-delivery'
+    ];
+    
+    // Check if this is an innovation question based on keywords OR specific question IDs
+    const isInnovationQuestion = innovationKeywords.some(keyword => 
+      message.toLowerCase().includes(keyword.toLowerCase())
+    ) || innovationTriggerQuestionIds.some(questionId => 
+      message.toLowerCase().includes(questionId.toLowerCase())
+    );
+
+    // Check if this is a meetup/speaking question
+    const meetupKeywords = [
+      'meetup', 'meetups', 'convention', 'conventions', 'speaking', 'speak',
+      'presentation', 'presentations', 'talk', 'talks', 'conference', 'conferences',
+      'public speaking', 'community', 'tech community', 'speaking engagement'
+    ];
+    
+    const meetupTriggerQuestionIds = [
+      'do-you-speak-at-meetups-and-conventions'
+    ];
+    
+    const isMeetupQuestion = meetupKeywords.some(keyword => 
+      message.toLowerCase().includes(keyword.toLowerCase())
+    ) || meetupTriggerQuestionIds.some(questionId => 
+      message.toLowerCase().includes(questionId.toLowerCase())
+    );
 
     const startTime = Date.now();
 
@@ -322,37 +364,21 @@ Answer as Olga would, considering the conversation context:`;
     const reply = completion.choices[0].message.content;
     const responseTime = Date.now() - startTime;
 
-    // Log the original LLM response prominently
-    console.log('🤖 ORIGINAL LLM RESPONSE:');
-    console.log('='.repeat(50));
-    console.log(reply);
-    console.log('='.repeat(50));
-    console.log('📊 Response length:', reply.length, 'characters');
-    console.log('⏱️ Response time:', responseTime, 'ms');
 
     // Post-process response to ensure links are included
     const ensureLinks = (text) => {
       let processed = text;
-      
-      console.log('🔧 Original response:', processed);
-      
+            
       processed = processed.replace(
         /\[([^\]]+)\]\(https:\/\/My LinkedIn\.com\/([^)]+)\)/g,
         '[$1](https://linkedin.com/$2)'
       );
       
-      console.log('🔧 Processed response:', processed);
       
       return processed;
     };
 
     const processedReply = ensureLinks(reply);
-
-    // Log the final processed response
-    console.log('🔧 FINAL PROCESSED RESPONSE:');
-    console.log('='.repeat(50));
-    console.log(processedReply);
-    console.log('='.repeat(50));
 
     // Calculate confidence scores properly
     const calculateConfidence = (distance) => {
@@ -375,11 +401,6 @@ Answer as Olga would, considering the conversation context:`;
       } else {
         // Poor match: 0-50%
         confidence = Math.max(0, 50 - (distance - 1.5) * 50);
-      }
-
-      // Boost confidence scores in the 50-60% range by adding 10 points
-      if (confidence >= 50 && confidence <= 60) {
-        confidence += 10;
       }
 
       return Math.round(Math.max(0, Math.min(100, confidence)));
@@ -413,7 +434,30 @@ Answer as Olga would, considering the conversation context:`;
       reply: processedReply,
       confidence: confidenceScores[0] || 0,
       sources: deduplicatedResults.metadatas.map(m => m.source),
-      sessionId: currentSessionId
+      sessionId: currentSessionId,
+      ...(isInnovationQuestion && { image: '/coding-project.jpg' }),
+      ...(isMeetupQuestion && { 
+        carousel: {
+          images: [
+            {
+              src: '/convention1.jpg',
+              subtitle: '🎤 Speaking at AI-Dev 2024 convention, AT&T being the sponsor.'
+            },
+            {
+              src: '/convention2.jpg',
+              subtitle: '🌟 Running the AT&T SDLC GenAI productivy solutions booth at AI-Dev 2024'
+            },
+            {
+              src: '/convention3.jpg',
+              subtitle: '🌟 Speaking in Girl\'s Week 2023-24'
+            },
+            {
+              src: '/convention4.jpg',
+              subtitle: '💡 Sharing innovation strategies and AI implementation for the TDP Junior program meetup'
+            }
+          ]
+        }
+      })
     });
 
   } catch (error) {

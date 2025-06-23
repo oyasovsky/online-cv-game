@@ -1,4 +1,5 @@
 import React from 'react';
+import Link from 'next/link';
 import Button from '../components/Button';
 import ParallaxBackground from '../components/ParallaxBackground';
 import TypewriterEffect from '../components/TypewriterEffect';
@@ -34,9 +35,9 @@ export default function Home() {
           >
             📄 View Classic CV
           </a>
-          <a href="/olgagpt" className="w-full sm:w-auto">
+          <Link href="/olgagpt" className="w-full sm:w-auto">
             <Button>Chat with OlgaGPT</Button>
-          </a>
+          </Link>
         </div>
         
       </div>
